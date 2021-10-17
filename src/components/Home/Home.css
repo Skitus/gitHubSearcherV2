@@ -1,31 +1,14 @@
-.flex-box {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.user {
+    margin: 10px 10px;
 }
 
-.left-sidebar {
-    text-align: center;
-    width: 48%;
-}
-
-.img {
-    width: 100px;
-    height: 100px;
+.title {
+text-align: center;
 }
 
 .blockRepos {
     margin-top: 60px;
     margin-bottom: 88px;
-}
-
-.img-username {
-    width: 50%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 20px;
 }
 
 .repo-number {

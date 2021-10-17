@@ -9,7 +9,7 @@ export const store = configureStore({
         users:usersReducer,
         user:userReducer,
         userRepo:userRepoReducer,
-        usersRepo:usersRepoReducer,
+        usersRepos:usersRepoReducer,
     },
 });
 

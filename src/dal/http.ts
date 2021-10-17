@@ -2,14 +2,16 @@ import axios from 'axios';
 
 class Http {
     headers = {Authorization: `token ${process.env.REACT_APP_ACCESS_TOKEN}`};
-    constructor(
-        private URL:string = 'https://api.github.com/',
-    ) {}
 
-    async getAllUsers(userName:string){
-        return await axios.get(`${this.URL}search/users`,{
-            headers:this.headers,
-            params:{
+    constructor(
+        private URL: string = 'https://api.github.com/',
+    ) {
+    }
+
+    async getAllUsers(userName: string) {
+        return await axios.get(`${this.URL}search/users`, {
+            headers: this.headers,
+            params: {
                 per_page: 5,
                 q: userName || "arthur",
             },
@@ -19,14 +21,14 @@ class Http {
 
 
     async getUserById(login: string) {
-        return await axios.get(`${this.URL}users/${login}`,{
-            headers:this.headers,
+        return await axios.get(`${this.URL}users/${login}`, {
+            headers: this.headers,
         })
             .then((response) => response.data)
             .catch((error) => console.log(error))
     };
 
-    async getAllUsersRepos(users:any) {
+    async getAllUsersRepos(users: any) {
         if (users) {
             const res: any = await Promise.all(users.items.map((user: any) => axios.get(user.repos_url, {
                 params: {
@@ -38,27 +40,15 @@ class Http {
         }
     };
 
-/*    getUserRepos(userName:string, repos: string):Promise<any>{
-        return axios.get(`${this.URL}search/repositories`,{
-            headers:this.headers,
-            params:{
-                q: `repo:${userName}/${repos}` || `repo:skitus/react-delivery`
-            }
-        })
-            .then((response)=> response.data)
-            .catch((error) => console.log(error))
-    }*/
-
-
-    async getUserRepos(user: any) {
-        const res: any = await axios.get(user.repos_url, {
+    async getUserRepos(userName:string, repos:string) {
+        const res = await axios.get(`${this.URL}search/repositories?q=${repos} user:${userName} fork:true `, {
             headers: this.headers,
             params: {
-                per_page: 50,
+                per_page: 100,
             }
-        });
-        return res.data;
-    };
+        }).then((response) => (response.data));
+        return res;
+    }
 }
 
 const http = new Http();

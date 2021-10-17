@@ -1,17 +1,11 @@
 import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import http from '../../dal/http';
 
-
-
 export const fetchGetUserRepo:any = createAsyncThunk(
     'user/fetchGetUserRepo',
-/*    async ({userName, repos}) => {
-        debugger;
+    // @ts-ignore
+    async ({userName, repos}) => {
         const res = await http.getUserRepos(userName, repos);
-        return res;
-    });*/
-    async (user) => {
-        const res = await http.getUserRepos(user);
         return res;
     });
 

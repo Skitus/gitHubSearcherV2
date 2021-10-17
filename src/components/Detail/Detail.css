@@ -1,17 +1,3 @@
-.right-sidebar {
-    width: 48%;
-    margin-top: 30px;
-    text-align: left;
-}
-.avatar-user {
-    width: 200px;
-    height: 200px;
-    margin-right: 20px;
-    margin-bottom: 20px;
-}
-.bio-text {
-    font-weight: bold;
-}
 .repos-user {
     border: 1px solid lightblue;
 }

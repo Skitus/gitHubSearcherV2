@@ -4,7 +4,7 @@ import http from '../../dal/http';
 
 export const fetchGetUsersRepo:any = createAsyncThunk(
     'usersRepo/fetchGetUsersRepo',
-    async (users:string ) => {
+    async (users) => {
         const res = await http.getAllUsersRepos(users);
         return res;
     });
