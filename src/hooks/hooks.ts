@@ -1,25 +1,29 @@
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {useParams, useRouteMatch} from 'react-router-dom';
+import {usersSelector} from '../store/users/users.selector';
+import {usersReposSelector} from '../store/usersRepos/usersRepo.selector';
+import {userSelector} from '../store/user/user.selector';
+import { userRepoSelector } from '../store/userRepo/userRepo.selector';
 
 export const useHomeData = () => {
+    let match = useRouteMatch();
     const dispatch = useDispatch();
     const [userName, setUserName] = useState('');
-    const {users, status} = useSelector((state:any) => state.users);
-    const {usersRepo} = useSelector((state: any) => state.usersRepos);
+    const {users, isLoading} = useSelector(usersSelector);
+    const {usersRepo} = useSelector(usersReposSelector);
 
-    return {userName, setUserName, users, status, usersRepo, dispatch};
+    return {match, userName, setUserName, users, isLoading, usersRepo, dispatch};
 }
-
 
 export const useDetailData = () => {
     const dispatch = useDispatch();
     let {userName} = useParams<{userName: string}>();
     const [repos, setRepos] = useState('');
-    const {user, status} = useSelector((state:any) => state.user);
-    const { userRepo } = useSelector((state:any)=>state.userRepo);
+    const {user, isLoading} = useSelector(userSelector);
+    const { userRepo } = useSelector(userRepoSelector);
 
-    return {userName, setRepos, dispatch, repos, user, status, userRepo};
+    return {userName, setRepos, dispatch, repos, user, isLoading, userRepo};
 }
 
 

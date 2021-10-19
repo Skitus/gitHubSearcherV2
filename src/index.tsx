@@ -4,9 +4,8 @@ import App from './App';
 import "antd/dist/antd.css";
 import {Provider} from "react-redux";
 import {BrowserRouter} from "react-router-dom";
-import store from "./redux/asyncThunk/strore";
+import store from './store/strore';
 import './index.css';
-
 
 ReactDOM.render(
     <React.StrictMode>

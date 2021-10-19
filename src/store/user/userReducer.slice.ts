@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import http from '../../dal/http';
+import gitHubService from '../../dal/http';
 
 
 export const fetchGetUser:any = createAsyncThunk(
     'user/fetchGetUser',
     async (login:string ) => {
-        const res = await http.getUserById(login);
+        const res = await gitHubService.getUserById(login);
         return res;
     });
 
 
-export  const userReducer = createSlice({
+export  const userReducerSlice = createSlice({
     name:'getUsers',
     initialState:{
         user:[],
@@ -34,4 +34,4 @@ export  const userReducer = createSlice({
     },
 });
 
-export default userReducer.reducer;
+export default userReducerSlice.reducer;

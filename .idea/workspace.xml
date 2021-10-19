@@ -2,21 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ef61e21a-b231-46d9-a72e-6da474173877" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/Title/Title.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Users/Users.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/UsersRepos/UsersRepos.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/user/user.selector.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/userRepo/userRepo.selector.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/users/users.selector.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Detail/Detail.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Detail/Detail.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Detail/Detail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Detail/Detail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Home/Home.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Home/Home.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Home/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Home/Home.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dal/http.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/dal/http.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/hooks/hooks.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/hooks.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/asyncThunk/strore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/asyncThunk/strore.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/asyncThunk/userRepoReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/asyncThunk/userRepoReducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/asyncThunk/usersRepoReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/asyncThunk/usersRepoReducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/actions/actions.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/asyncThunk/strore.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/strore.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/asyncThunk/userReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/user/userReducer.slice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/asyncThunk/userRepoReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/userRepo/userRepoReducer.slice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/asyncThunk/usersReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/users/usersReducer.slice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/asyncThunk/usersRepoReducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/usersRepos/usersRepoReducer.slice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/fetch/fetch.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/gitHub.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/redux-store.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -42,6 +63,15 @@
     <property name="ts.external.directory.path" value="D:\Проекты\my works\React-redux\github-searcher-master\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Проекты\my works\React-redux\github-searcher-master\src\store\usersRepos" />
+      <recent name="D:\Проекты\my works\React-redux\github-searcher-master\src\store\users" />
+      <recent name="D:\Проекты\my works\React-redux\github-searcher-master\src\store\userRepo" />
+      <recent name="D:\Проекты\my works\React-redux\github-searcher-master\src\store\user" />
+      <recent name="D:\Проекты\my works\React-redux\github-searcher-master\src\store" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -56,7 +86,11 @@
       <workItem from="1634466481270" duration="285000" />
       <workItem from="1634466783767" duration="330000" />
       <workItem from="1634469185924" duration="2951000" />
-      <workItem from="1634476776875" duration="3861000" />
+      <workItem from="1634476776875" duration="4137000" />
+      <workItem from="1634563889020" duration="59000" />
+      <workItem from="1634666437849" duration="6476000" />
+      <workItem from="1634673058151" duration="1412000" />
+      <workItem from="1634674576813" duration="2293000" />
     </task>
     <task id="LOCAL-00001" summary="create app">
       <created>1634464391848</created>
@@ -65,7 +99,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634464391848</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="clear layout">
+      <created>1634481240571</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1634481240571</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -97,6 +138,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create app" />
-    <option name="LAST_COMMIT_MESSAGE" value="create app" />
+    <MESSAGE value="clear layout" />
+    <option name="LAST_COMMIT_MESSAGE" value="clear layout" />
   </component>
 </project>

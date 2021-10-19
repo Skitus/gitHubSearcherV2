@@ -1,34 +1,34 @@
 import { createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import http from '../../dal/http';
+import gitHubService from '../../dal/http';
 
 export const fetchGetUsers:any = createAsyncThunk(
     'users/fetchGetUsers',
     async (userName:string ) => {
-        const res = await http.getAllUsers(userName);
+        const res = await gitHubService.getAllUsers(userName);
         return res;
     });
 
 
-export  const usersReducer = createSlice({
+export  const usersReducerSlice = createSlice({
     name:'getUsers',
     initialState:{
         users:[],
-        status:true,
+        isLoading:true,
     },
     reducers:{},
 
     extraReducers: {
         [fetchGetUsers.pending]: (state, action) => {
-            state.status = true;
+            state.isLoading = true;
         },
         [fetchGetUsers.fulfilled]: (state, action) => {
             state.users = action.payload;
-            state.status = false;
+            state.isLoading = false;
         },
         [fetchGetUsers.rejected]: (state, action) => {
-            state.status = true;
+            state.isLoading = true;
         },
     },
 });
 
-export default usersReducer.reducer;
+export default usersReducerSlice.reducer;

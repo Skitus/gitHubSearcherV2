@@ -1,13 +1,13 @@
 import React, {useCallback} from 'react';
 import debounce from 'lodash.debounce';
 import {Col, Form, Image, Input, Row, Spin, Typography} from 'antd';
-import {useDetailData} from '../../hooks/hooks';
-import {fetchGetUser} from '../../redux/asyncThunk/userReducer';
-import {fetchGetUserRepo} from '../../redux/asyncThunk/userRepoReducer';
+import { fetchGetUser } from '../../store/user/userReducer.slice';
+import { fetchGetUserRepo } from '../../store/userRepo/userRepoReducer.slice';
+import { useDetailData } from '../../hooks/hooks';
 import './Detail.css';
 
 function Detail() {
-    const {userName, setRepos, dispatch, repos, userRepo, status, user} = useDetailData();
+    const {userName, setRepos, dispatch, repos, userRepo, isLoading, user} = useDetailData();
 
     React.useEffect(() => {
         dispatch(fetchGetUser(userName));
@@ -19,7 +19,7 @@ function Detail() {
     };
 
     const debouncedChangeHandler = useCallback(
-        debounce(changeHandler, 1000)
+        debounce(changeHandler, 500)
         , [repos]);
 
     return (
@@ -50,7 +50,7 @@ function Detail() {
                 </Form.Item>
             </Form>
             {
-                status ?
+                isLoading ?
                     <Spin size="large" /> :
                     userRepo.items?.map((repo: { name: string, forks_count: number, stargazers_count: number, html_url: string }) =>
                         <Typography.Link href={repo.html_url} target="_blank">
