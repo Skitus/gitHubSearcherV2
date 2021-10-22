@@ -1,73 +1,54 @@
-import React, {useCallback} from 'react';
+import React, { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import {Col, Form, Image, Input, Row, Spin, Typography} from 'antd';
-import { fetchGetUser } from '../../store/user/userReducer.slice';
-import { fetchGetUserRepo } from '../../store/userRepo/userRepoReducer.slice';
-import { useDetailData } from '../../hooks/hooks';
-import './Detail.css';
+import { Col, Form, Image, Input, Row, Spin, Typography } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { fetchUserRepo } from '../../store/userRepo/userRepo.slice';
+import { fetchUser } from '../../store/user/user.slice';
+import { userSelector } from '../../store/user/user.selector';
+import { userRepoSelector } from '../../store/userRepo/userRepo.selector';
+import User from '../User/User';
+import UserRepo from '../UserRepo/UserRepo';
+import './Detail.scss';
 
 function Detail() {
-    const {userName, setRepos, dispatch, repos, userRepo, isLoading, user} = useDetailData();
+  const dispatch = useDispatch();
+  const { userName } = useParams<{userName: string}>();
+  const [repos, setRepos] = useState('');
+  const userRequest = useSelector(userSelector);
+  const userRepoRequest = useSelector(userRepoSelector);
 
-    React.useEffect(() => {
-        dispatch(fetchGetUser(userName));
-        dispatch(fetchGetUserRepo({userName, repos}));
-    }, [userName, repos]);
+  React.useEffect(() => {
+    dispatch(fetchUserRepo({ userName, repos }));
+  }, [userName, repos]);
 
-    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRepos(event.target.value);
-    };
+  React.useEffect(() => {
+    dispatch(fetchUser(userName));
+  }, [userName]);
 
-    const debouncedChangeHandler = useCallback(
-        debounce(changeHandler, 500)
-        , [repos]);
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRepos(event.target.value);
+  };
 
-    return (
-        <>
-            <Row justify='center' align='top' gutter={20}>
-                <Col>
-                    <Image
-                        width={200}
-                        height={200}
-                        src={user.avatar_url}
-                    />
-                </Col>
-                <Col>
-                    <Typography>
-                        <Typography.Paragraph strong>{user.login}</Typography.Paragraph>
-                        <Typography.Paragraph strong>{user.email}</Typography.Paragraph>
-                        <Typography.Paragraph strong>{user.location}</Typography.Paragraph>
-                        <Typography.Paragraph strong>{user.created_at}</Typography.Paragraph>
-                        <Typography.Paragraph strong>{user.bio}</Typography.Paragraph>
-                        <Typography.Paragraph strong>Followers: {user.followers}</Typography.Paragraph>
-                        <Typography.Paragraph strong>Following: {user.following}</Typography.Paragraph>
-                    </Typography>
-                </Col>
-            </Row>
-            <Form>
-                <Form.Item>
-                    <Input placeholder='Search for Repos' onChange={debouncedChangeHandler}/>
-                </Form.Item>
-            </Form>
-            {
-                isLoading ?
-                    <Spin size="large" /> :
-                    userRepo.items?.map((repo: { name: string, forks_count: number, stargazers_count: number, html_url: string }) =>
-                        <Typography.Link href={repo.html_url} target="_blank">
-                            <Row justify='space-between' align='middle' className='repos-user'>
-                                <Col>
-                                    <Typography.Text>{repo.name}</Typography.Text>
-                                </Col>
-                                <Col>
-                                    <Typography.Paragraph>Forks {repo.forks_count}</Typography.Paragraph>
-                                    <Typography.Text>Stars {repo.stargazers_count}</Typography.Text>
-                                </Col>
-                            </Row>
-                        </Typography.Link>
-                    )
-            }
-        </>
-    );
+  const debouncedChangeHandler = useCallback(
+    debounce(changeHandler, 500),
+    [repos],
+  );
+
+  return (
+    <>
+      <Row justify="center" align="top" gutter={20}>
+        <User user={userRequest.user} isLoading={userRequest.isLoading} />
+      </Row>
+      <Form>
+        <Form.Item>
+          <Input placeholder="Search for Repos" onChange={debouncedChangeHandler} />
+        </Form.Item>
+      </Form>
+
+      <UserRepo userRepo={userRepoRequest.userRepo} isLoading={userRepoRequest.isLoading} />
+    </>
+  );
 }
 
 export default Detail;

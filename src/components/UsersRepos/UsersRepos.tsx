@@ -1,27 +1,29 @@
-import { Spin, Typography} from 'antd';
 import React from 'react';
+import { Spin, Typography } from 'antd';
+import { IUsersRepo } from '../../types/User.types';
+import './UsersRepos.scss';
 
-interface IUsersRepos {
+interface UsersReposProps {
     isLoading: boolean,
-    usersRepo: []
+    usersRepo: IUsersRepo[]
 }
 
-const UsersRepos = ({isLoading, usersRepo}: IUsersRepos) => {
-    return (
-        <>
-            {
-                isLoading ?
-                    <Spin size="large"/> :
-                    usersRepo.map((arr: { id: number, length: number }) => (
-                        <div key={arr.id} className="blockRepos">
-                            <Typography.Paragraph className="repo-number">
-                                Repo: {arr.length}
-                            </Typography.Paragraph>
-                        </div>)
-                    )
-            }
-        </>
-    );
-}
+const UsersRepos = ({ isLoading, usersRepo }: UsersReposProps) => (
+  <>
+    {
+    isLoading
+      ? <Spin size="large" />
+      : usersRepo.map((repo) => (
+        <div key={repo.id} className="blockRepos">
+          <Typography.Paragraph className="repo-number">
+            Repo:
+            {' '}
+            {repo.length}
+          </Typography.Paragraph>
+        </div>
+      ))
+    }
+  </>
+);
 
 export default UsersRepos;
