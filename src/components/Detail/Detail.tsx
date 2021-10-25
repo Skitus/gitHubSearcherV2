@@ -7,8 +7,8 @@ import { fetchUserRepo } from '../../store/userRepo/userRepo.slice';
 import { fetchUser } from '../../store/user/user.slice';
 import { userSelector } from '../../store/user/user.selector';
 import { userRepoSelector } from '../../store/userRepo/userRepo.selector';
-import User from '../User/User';
-import UserRepo from '../UserRepo/UserRepo';
+import UserProfile from '../UserProfile/UserProfile';
+import UserProfileRepos from '../UserProfileRepos/UserProfileRepos';
 import './Detail.scss';
 
 function Detail() {
@@ -38,15 +38,17 @@ function Detail() {
   return (
     <>
       <Row justify="center" align="top" gutter={20}>
-        <User user={userRequest.user} isLoading={userRequest.isLoading} />
+        <UserProfile user={userRequest.user} isLoading={userRequest.isLoading} />
       </Row>
       <Form>
         <Form.Item>
           <Input placeholder="Search for Repos" onChange={debouncedChangeHandler} />
         </Form.Item>
       </Form>
-
-      <UserRepo userRepo={userRepoRequest.userRepo} isLoading={userRepoRequest.isLoading} />
+      <UserProfileRepos
+        userRepo={userRepoRequest.userRepo}
+        isLoading={userRepoRequest.isLoading}
+      />
     </>
   );
 }

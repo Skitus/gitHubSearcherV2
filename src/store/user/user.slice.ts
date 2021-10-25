@@ -6,7 +6,7 @@ export const fetchUser:any = createAsyncThunk(
   async (userName:string) => await gitHubService.getUserById(userName),
 );
 
-export const userSlice = createSlice({
+export const user = createSlice({
   name: 'getUsers',
   initialState: {
     user: [],
@@ -30,4 +30,4 @@ export const userSlice = createSlice({
   },
 });
 
-export default userSlice.reducer;
+export default user.reducer;

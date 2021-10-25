@@ -9,7 +9,7 @@ export const fetchUserRepo:any = createAsyncThunk(
   },
 );
 
-export const userReducerRepo = createSlice({
+export const userRepo = createSlice({
   name: 'getUsers',
   initialState: {
     userRepo: [],
@@ -33,4 +33,4 @@ export const userReducerRepo = createSlice({
   },
 });
 
-export default userReducerRepo.reducer;
+export default userRepo.reducer;

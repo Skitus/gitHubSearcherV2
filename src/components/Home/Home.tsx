@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Col, Form, Input, Row, Spin } from 'antd';
+import { Col, Form, Input, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { DetailRoute } from '../../routes/Routes';
-import Users from '../Users/Users';
-import UsersRepos from '../UsersRepos/UsersRepos';
 import Title from '../Title/Title';
 import { usersSelector } from '../../store/users/users.selector';
 import { usersReposSelector } from '../../store/usersRepos/usersRepo.selector';
 import { fetchUsers } from '../../store/users/users.slice';
 import { fetchUsersRepo } from '../../store/usersRepos/usersRepo.slice';
+import AllUsers from '../Users/Users';
+import NumberRepos from '../NumberRepos/NumberRepos';
 import './Home.scss';
 
 const Home = () => {
@@ -47,10 +47,10 @@ const Home = () => {
         </Form>
         <Row justify="space-between" align="top">
           <Col>
-            <Users isLoading={usersRequest.isLoading} users={usersRequest.users} />
+            <AllUsers isLoading={usersRequest.isLoading} users={usersRequest.users} />
           </Col>
           <Col>
-            <UsersRepos
+            <NumberRepos
               isLoading={usersReposRequest.isLoading}
               usersRepo={usersReposRequest.usersRepo}
             />
@@ -58,12 +58,9 @@ const Home = () => {
         </Row>
       </Col>
       <Col span={11}>
-        {
-          usersRequest.isLoading ? <Spin size="large" /> : <DetailRoute />
-        }
+        <DetailRoute />
       </Col>
     </Row>
-
   );
 };
 

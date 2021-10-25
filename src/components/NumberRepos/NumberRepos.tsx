@@ -1,17 +1,16 @@
 import React from 'react';
 import { Spin, Typography } from 'antd';
-import { IUsersRepo } from '../../types/User.types';
-import './UsersRepos.scss';
+import { UsersRepos } from '../../types/User.types';
+import './NumberRepos.scss';
 
 interface UsersReposProps {
     isLoading: boolean,
-    usersRepo: IUsersRepo[]
+    usersRepo: UsersRepos[]
 }
 
-const UsersRepos = ({ isLoading, usersRepo }: UsersReposProps) => (
+const NumberRepos = ({ isLoading, usersRepo }: UsersReposProps) => (
   <>
-    {
-    isLoading
+    {isLoading
       ? <Spin size="large" />
       : usersRepo.map((repo) => (
         <div key={repo.id} className="blockRepos">
@@ -21,9 +20,8 @@ const UsersRepos = ({ isLoading, usersRepo }: UsersReposProps) => (
             {repo.length}
           </Typography.Paragraph>
         </div>
-      ))
-    }
+      ))}
   </>
 );
 
-export default UsersRepos;
+export default NumberRepos;

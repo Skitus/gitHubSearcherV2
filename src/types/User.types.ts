@@ -1,4 +1,4 @@
-export interface IUser {
+export interface User {
     avatar_url: string,
     login: string,
     email: string,
@@ -9,20 +9,20 @@ export interface IUser {
     following: number
 }
 
-export interface IUserRepo {
+export interface UserRepo {
     name: string,
     forks_count: number,
     stargazers_count: number,
     html_url: string
 }
 
-export interface IUsers {
+export interface Users {
     login: string,
     avatar_url: string,
     id: number
 }
 
-export interface IUsersRepo {
+export interface UsersRepos {
     id: number,
     length: number
 }
