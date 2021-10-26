@@ -1,5 +1,23 @@
-.spiner {
+
+.left-side {
+  position: fixed;
+  right: 52%;
   width: 100%;
-  display: block;
-  margin: 0px auto;
+
+  .spiner {
+    width: 100%;
+    display: block;
+    margin: 0px auto;
+  }
+}
+
+.right-side {
+  left: 25%;
+  width: 100%;
+}
+
+@media screen and (max-width: 995px) {
+  .left-side, .right-side {
+    position: static;
+  }
 }

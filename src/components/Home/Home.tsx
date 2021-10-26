@@ -38,7 +38,7 @@ const Home = () => {
 
   return (
     <Row justify="space-around" align="top">
-      <Col xs={23} sm={23} md={23} lg={11} xl={11} xxl={11}>
+      <Col xs={23} sm={23} md={23} lg={11} xl={11} xxl={11} className="left-side">
         <Title />
         <Form>
           <Form.Item>
@@ -62,7 +62,7 @@ const Home = () => {
             )
         }
       </Col>
-      <Col xs={23} sm={23} md={23} lg={11} xl={11} xxl={11}>
+      <Col xs={23} sm={23} md={23} lg={11} xl={11} xxl={11} className="right-side">
         <DetailRoute />
       </Col>
     </Row>

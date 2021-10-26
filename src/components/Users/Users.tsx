@@ -13,7 +13,7 @@ const AllUsers = ({ isLoading, users }: UsersProps): any => (
   isLoading
     ? <Spin size="large" />
     : (users.map((obj) => (
-      <Link to={`${obj.login}`} key={obj.id}>
+      <Link to={obj.login} key={obj.id}>
         <Row className="users" justify="space-between" align="middle" key={obj.id}>
           <Image
             width={100}
