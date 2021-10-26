@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Col, Form, Input, Row } from 'antd';
+import { Col, Form, Input, Row, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { DetailRoute } from '../../routes/Routes';
 import Title from '../Title/Title';
@@ -28,12 +28,12 @@ const Home = () => {
     }
   }, [usersRequest.users]);
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
   };
 
   const debouncedChangeHandler = useCallback(
-    debounce(changeHandler, 500), [userName],
+    debounce(changeUserName, 500), [userName],
   );
 
   return (
@@ -45,17 +45,22 @@ const Home = () => {
             <Input placeholder="Search for Users" onChange={debouncedChangeHandler} />
           </Form.Item>
         </Form>
-        <Row justify="space-between" align="top">
-          <Col>
-            <AllUsers isLoading={usersRequest.isLoading} users={usersRequest.users} />
-          </Col>
-          <Col>
-            <NumberRepos
-              isLoading={usersReposRequest.isLoading}
-              usersRepo={usersReposRequest.usersRepo}
-            />
-          </Col>
-        </Row>
+        {
+          usersReposRequest.isLoading
+            ? <Spin size="large" className="spiner" />
+            : (
+              <Row justify="space-between" align="top">
+                <Col>
+                  <AllUsers isLoading={usersRequest.isLoading} users={usersRequest.users} />
+                </Col>
+                <Col>
+                  <NumberRepos
+                    usersRepo={usersReposRequest.usersRepo}
+                  />
+                </Col>
+              </Row>
+            )
+        }
       </Col>
       <Col span={11}>
         <DetailRoute />

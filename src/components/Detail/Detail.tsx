@@ -47,7 +47,6 @@ function Detail() {
       </Form>
       <UserProfileRepos
         userRepo={userRepoRequest.userRepo}
-        isLoading={userRepoRequest.isLoading}
       />
     </>
   );
