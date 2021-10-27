@@ -37,6 +37,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": "https://her123123.com",
   "eslintConfig": {
     "extends": [
       "react-app",
