@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Col, Form, Input, Row, Spin } from 'antd';
+import { Col, Form, Input, Pagination, Row, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { DetailRoute } from '../../routes/Routes';
 import Title from '../Title/Title';
@@ -17,14 +17,16 @@ const Home = () => {
   const [userName, setUserName] = useState('');
   const usersRequest = useSelector(usersSelector);
   const usersReposRequest = useSelector(usersReposSelector);
+  const [perPage, setPerPage] = useState(1);
+  const total = usersRequest.users.total_count;
 
   React.useEffect(() => {
-    dispatch(fetchUsers(userName));
-  }, [userName]);
+    dispatch(fetchUsers({ userName, perPage }));
+  }, [userName, perPage]);
 
   React.useEffect(() => {
     if (usersRequest.users) {
-      dispatch(fetchUsersRepo(usersRequest.users));
+      dispatch(fetchUsersRepo(usersRequest.users.items));
     }
   }, [usersRequest.users]);
 
@@ -52,6 +54,12 @@ const Home = () => {
               <Row justify="space-between" align="top">
                 <Col>
                   <AllUsers isLoading={usersRequest.isLoading} users={usersRequest.users} />
+                  <Pagination
+                    onChange={(value) => setPerPage(value)}
+                    pageSize={50}
+                    total={total}
+                    current={perPage}
+                  />
                 </Col>
                 <Col>
                   <NumberRepos

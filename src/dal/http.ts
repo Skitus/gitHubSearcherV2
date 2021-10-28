@@ -5,12 +5,13 @@ class GitHubService {
 
     readonly BASE_URL = 'https://api.github.com/';
 
-    async getAllUsers(userName: string) {
+    async getAllUsers(userName: string, perPage:number) {
       const res = await axios.get(`${this.BASE_URL}search/users`, {
         headers: this.headers,
         params: {
-          per_page: 5,
+          per_page: 20,
           q: userName || 'arthur',
+          page: perPage || 10,
         },
       });
       return res.data;
@@ -27,7 +28,7 @@ class GitHubService {
       const res: any = Promise.all(users.map(
         (user: { repos_url: string }) => axios.get(user.repos_url, {
           params: {
-            per_page: 100,
+            per_page: 5,
           },
         })
           .then((response) => (response.data)),

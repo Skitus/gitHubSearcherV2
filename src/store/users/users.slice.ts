@@ -3,9 +3,9 @@ import gitHubService from '../../dal/http';
 
 export const fetchUsers:any = createAsyncThunk(
   'users/fetchGetUsers',
-  async (userName:string) => {
-    const res: any = await gitHubService.getAllUsers(userName);
-    return res.items;
+  async ({ userName, perPage }: any) => {
+    const res: any = await gitHubService.getAllUsers(userName, perPage);
+    return res;
   },
 );
 
@@ -26,7 +26,7 @@ export const users = createSlice({
       state.isLoading = false;
     },
     [fetchUsers.rejected]: (state, action) => {
-      state.isLoading = false;
+      state.isLoading = true;
     },
   },
 });
