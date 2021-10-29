@@ -18,17 +18,16 @@ const Home = () => {
   const usersRequest = useSelector(usersSelector);
   const usersReposRequest = useSelector(usersReposSelector);
   const [perPage, setPerPage] = useState(1);
-  const total = usersRequest.users.total_count;
 
   React.useEffect(() => {
     dispatch(fetchUsers({ userName, perPage }));
   }, [userName, perPage]);
 
-  React.useEffect(() => {
+  /*  React.useEffect(() => {
     if (usersRequest.users) {
       dispatch(fetchUsersRepo(usersRequest.users.items));
     }
-  }, [usersRequest.users]);
+  }, [usersRequest.users]); */
 
   const changeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
@@ -48,7 +47,7 @@ const Home = () => {
           </Form.Item>
         </Form>
         {
-          usersReposRequest.isLoading
+          usersRequest.isLoading // change to usersRequestRepos
             ? <Spin size="large" className="spiner" />
             : (
               <Row justify="space-between" align="top">
@@ -57,14 +56,14 @@ const Home = () => {
                   <Pagination
                     onChange={(value) => setPerPage(value)}
                     pageSize={50}
-                    total={total}
+                    total={1000}
                     current={perPage}
                   />
                 </Col>
                 <Col>
-                  <NumberRepos
+                  {/*                  <NumberRepos
                     usersRepo={usersReposRequest.usersRepo}
-                  />
+                  /> */}
                 </Col>
               </Row>
             )

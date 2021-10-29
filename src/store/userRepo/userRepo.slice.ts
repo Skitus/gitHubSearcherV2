@@ -3,9 +3,9 @@ import gitHubService from '../../dal/http';
 
 export const fetchUserRepo:any = createAsyncThunk(
   'user/fetchGetUserRepo',
-  async ({ userName, repos }: any) => {
-    const res: any = await gitHubService.getUserRepos(userName, repos);
-    return res.items;
+  async ({ userName, repos, perPage }: any) => {
+    const res: any = await gitHubService.getUserRepos(userName, repos, perPage);
+    return res;
   },
 );
 

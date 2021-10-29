@@ -9,9 +9,9 @@ class GitHubService {
       const res = await axios.get(`${this.BASE_URL}search/users`, {
         headers: this.headers,
         params: {
-          per_page: 20,
+          per_page: 5,
           q: userName || 'arthur',
-          page: perPage || 10,
+          page: perPage || 1,
         },
       });
       return res.data;
@@ -36,11 +36,12 @@ class GitHubService {
       return res;
     }
 
-    async getUserRepos(userName: string, repos: string) {
+    async getUserRepos(userName: string, repos: string, perPage: number) {
       const res = await axios.get(`${this.BASE_URL}search/repositories?q=${repos} user:${userName} fork:true `, {
         headers: this.headers,
         params: {
-          per_page: 100,
+          per_page: 5,
+          page: perPage || 1,
         },
       });
       return res.data;
