@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import gitHubService from '../../dal/http';
+import gitHubService from '../../dal/GitHubService';
 
 export const fetchUser:any = createAsyncThunk(
   'user/fetchGetUser',
@@ -9,7 +9,7 @@ export const fetchUser:any = createAsyncThunk(
 export const user = createSlice({
   name: 'getUsers',
   initialState: {
-    user: [],
+    data: [],
     isLoading: true,
   },
   reducers: {
@@ -18,10 +18,10 @@ export const user = createSlice({
 
   extraReducers: {
     [fetchUser.pending]: (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
     },
     [fetchUser.fulfilled]: (state, action) => {
-      state.user = action.payload;
+      state.data = action.payload;
       state.isLoading = false;
     },
     [fetchUser.rejected]: (state, action) => {

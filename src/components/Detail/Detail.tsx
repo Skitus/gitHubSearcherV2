@@ -1,29 +1,36 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Form, Input, Pagination, Row, Spin } from 'antd';
+import { Form, Input, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fetchUserRepo } from '../../store/userRepo/userRepo.slice';
+import { fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
 import { fetchUser } from '../../store/user/user.slice';
-import { userSelector } from '../../store/user/user.selector';
-import { userRepoSelector } from '../../store/userRepo/userRepo.selector';
+import {
+  selectUserRepoCurrentPage,
+  selectUserRepoData,
+  selectUserRepoIsLoading,
+  selectUserRepoTotalCount,
+} from '../../store/userRepo/userRepo.selector';
+import { selectUserData, selectUserIsLoading } from '../../store/user/user.selector';
 import UserProfile from '../UserProfile/UserProfile';
 import UserProfileRepos from '../UserProfileRepos/UserProfileRepos';
 import './Detail.scss';
 
-function Detail() {
+const Detail = () => {
   const dispatch = useDispatch();
   const { userName } = useParams<{userName: string}>();
   const [repos, setRepos] = useState('');
-  const userRequest = useSelector(userSelector);
-  const userRepoRequest = useSelector(userRepoSelector);
-  const [perPage, setPerPage] = useState(1);
-  const total = Math.ceil(userRepoRequest?.userRepo?.total_count) > 1000 ? 20
-    : Math.ceil(userRepoRequest?.userRepo?.total_count);
+  const userRepo = useSelector(selectUserRepoData);
+  const repoIsLoading = useSelector(selectUserRepoIsLoading);
+  const currentPageUserRepo = useSelector(selectUserRepoCurrentPage);
+  const user = useSelector(selectUserData);
+  const userIsLoading = useSelector(selectUserIsLoading);
+  const totalUserRepo = useSelector(selectUserRepoTotalCount);
+  const pagesCount = Math.ceil(totalUserRepo / 30);
 
   React.useEffect(() => {
-    dispatch(fetchUserRepo({ userName, repos, perPage }));
-  }, [userName, repos, perPage]);
+    dispatch(fetchUserRepo({ userName, repos, currentPageUserRepo }));
+  }, [userName, repos, currentPageUserRepo]);
 
   React.useEffect(() => {
     dispatch(fetchUser(userName));
@@ -38,34 +45,32 @@ function Detail() {
     [repos],
   );
 
+  const handleScroll = (event: any) => {
+    const { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
+    if (Math.ceil(scrollHeight - scrollTop) === clientHeight
+          && currentPageUserRepo < pagesCount) {
+      dispatch(setCurrentPageUserRepo(currentPageUserRepo + 1));
+    }
+  };
+
   return (
     <>
       <Row justify="center" align="top" gutter={20}>
-        <UserProfile user={userRequest.user} isLoading={userRequest.isLoading} />
+        <UserProfile user={user} isLoading={userIsLoading} />
       </Row>
       <Form>
         <Form.Item>
           <Input placeholder="Search for Repos" onChange={debouncedChangeHandler} />
         </Form.Item>
       </Form>
-      <UserProfileRepos
-        userRepo={userRepoRequest.userRepo}
-        isLoading={userRepoRequest.isLoading}
-      />
-      {
-            userRepoRequest.isLoading
-              ? <Spin size="large" className="spiner" />
-              : (
-                <Pagination
-                  onChange={(value) => setPerPage(value)}
-                  pageSize={5}
-                  total={total}
-                  current={perPage}
-                />
-              )
-        }
+      <div className="userRepo" onScroll={handleScroll}>
+        <UserProfileRepos
+          userRepo={userRepo}
+          isLoading={repoIsLoading}
+        />
+      </div>
     </>
   );
-}
+};
 
 export default Detail;

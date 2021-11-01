@@ -1,33 +1,46 @@
 import React, { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Col, Form, Input, Pagination, Row, Spin } from 'antd';
+import { Col, Form, Input, Row, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { DetailRoute } from '../../routes/Routes';
 import Title from '../Title/Title';
-import { usersSelector } from '../../store/users/users.selector';
-import { usersReposSelector } from '../../store/usersRepos/usersRepo.selector';
+import {
+  selectUsersCurrentPage,
+  selectUsersData,
+  selectUsersIsLoading, selectUsersPerPage,
+  selectUsersTotalCount,
+} from '../../store/users/users.selector';
 import { fetchUsers } from '../../store/users/users.slice';
 import { fetchUsersRepo } from '../../store/usersRepos/usersRepo.slice';
 import AllUsers from '../Users/Users';
 import NumberRepos from '../NumberRepos/NumberRepos';
+import { selectUsersRepoIsLoading, selectUsersRepositories } from '../../store/usersRepos/usersRepo.selector';
+import PaginationUsers from '../Pagination/PaginationUsers';
 import './Home.scss';
 
 const Home = () => {
   const dispatch = useDispatch();
   const [userName, setUserName] = useState('');
-  const usersRequest = useSelector(usersSelector);
-  const usersReposRequest = useSelector(usersReposSelector);
-  const [perPage, setPerPage] = useState(1);
+  const users = useSelector(selectUsersData);
+  const isLoading = useSelector(selectUsersIsLoading);
+  const currentPageUsers = useSelector(selectUsersCurrentPage);
+  let total = useSelector(selectUsersTotalCount);
+  const repos = useSelector(selectUsersRepositories);
+  const reposIsLoading = useSelector(selectUsersRepoIsLoading);
+  const usersParam = useSelector(selectUsersPerPage);
+
+  total = Math.ceil(total) > 1000 ? 1000 : total;
+  const pagesCountUsers = Math.ceil(total / usersParam);
 
   React.useEffect(() => {
-    dispatch(fetchUsers({ userName, perPage }));
-  }, [userName, perPage]);
+    dispatch(fetchUsers({ userName, currentPageUsers }));
+  }, [userName, currentPageUsers]);
 
-  /*  React.useEffect(() => {
-    if (usersRequest.users) {
-      dispatch(fetchUsersRepo(usersRequest.users.items));
+  React.useEffect(() => {
+    if (users) {
+      dispatch(fetchUsersRepo(users));
     }
-  }, [usersRequest.users]); */
+  }, [users]);
 
   const changeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
@@ -47,23 +60,21 @@ const Home = () => {
           </Form.Item>
         </Form>
         {
-          usersRequest.isLoading // change to usersRequestRepos
+          reposIsLoading
             ? <Spin size="large" className="spiner" />
             : (
               <Row justify="space-between" align="top">
                 <Col>
-                  <AllUsers isLoading={usersRequest.isLoading} users={usersRequest.users} />
-                  <Pagination
-                    onChange={(value) => setPerPage(value)}
-                    pageSize={50}
-                    total={1000}
-                    current={perPage}
+                  <AllUsers isLoading={isLoading} users={users} />
+                  <PaginationUsers
+                    currentPage={currentPageUsers}
+                    pagesCount={pagesCountUsers}
                   />
                 </Col>
                 <Col>
-                  {/*                  <NumberRepos
-                    usersRepo={usersReposRequest.usersRepo}
-                  /> */}
+                  <NumberRepos
+                    usersRepo={repos}
+                  />
                 </Col>
               </Row>
             )

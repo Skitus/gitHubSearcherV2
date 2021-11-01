@@ -1,6 +1,12 @@
 import { createSelector } from 'reselect';
 
-export const usersReposSelector = createSelector(
-  (state: any) => state,
-  (state) => state.usersRepos,
+const selectUsersRepos = (state: any) => state.usersRepos;
+
+export const selectUsersRepositories = createSelector(
+  selectUsersRepos,
+  (state) => state.usersRepo,
+);
+export const selectUsersRepoIsLoading = createSelector(
+  selectUsersRepos,
+  (state) => state.isLoading,
 );

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import gitHubService from '../../dal/http';
+import gitHubService from '../../dal/GitHubService';
 
 export const fetchUsersRepo:any = createAsyncThunk(
   'usersRepo/fetchGetUsersRepo',
@@ -19,7 +19,7 @@ export const usersRepos = createSlice({
 
   extraReducers: {
     [fetchUsersRepo.pending]: (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
     },
     [fetchUsersRepo.fulfilled]: (state, action) => {
       state.usersRepo = action.payload;

@@ -5,16 +5,19 @@ class GitHubService {
 
     readonly BASE_URL = 'https://api.github.com/';
 
-    async getAllUsers(userName: string, perPage:number) {
+    async getAllUsers(userName: string, currentPageUsers:number) {
       const res = await axios.get(`${this.BASE_URL}search/users`, {
         headers: this.headers,
         params: {
           per_page: 5,
           q: userName || 'arthur',
-          page: perPage || 1,
+          page: currentPageUsers || 1,
         },
       });
-      return res.data;
+      return {
+        data: res.data,
+        per_page: res.config.params.per_page,
+      };
     }
 
     async getUserById(userName: string) {
@@ -36,12 +39,11 @@ class GitHubService {
       return res;
     }
 
-    async getUserRepos(userName: string, repos: string, perPage: number) {
+    async getUserRepos(userName: string, repos: string, currentPageUserRepo: number) {
       const res = await axios.get(`${this.BASE_URL}search/repositories?q=${repos} user:${userName} fork:true `, {
         headers: this.headers,
         params: {
-          per_page: 5,
-          page: perPage || 1,
+          page: currentPageUserRepo || 1,
         },
       });
       return res.data;

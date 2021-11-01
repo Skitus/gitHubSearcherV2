@@ -5,14 +5,14 @@ import { Users } from '../../types/User.types';
 import './Users.scss';
 
 interface UsersProps {
-    users: {items: Users[]},
+    users: Users[],
     isLoading: boolean
 }
 
 const AllUsers = ({ isLoading, users }: UsersProps): any => (
   isLoading
     ? <Spin size="large" />
-    : (users.items.map((obj) => (
+    : (users.map((obj) => (
       <Link to={obj.login} key={obj.id}>
         <Row className="users" justify="space-between" align="middle" key={obj.id}>
           <Image
