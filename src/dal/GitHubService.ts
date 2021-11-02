@@ -31,7 +31,7 @@ class GitHubService {
       const res: any = Promise.all(users.map(
         (user: { repos_url: string }) => axios.get(user.repos_url, {
           params: {
-            per_page: 5,
+            per_page: 30,
           },
         })
           .then((response) => (response.data)),

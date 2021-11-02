@@ -66,10 +66,6 @@ const Home = () => {
               <Row justify="space-between" align="top">
                 <Col>
                   <AllUsers isLoading={isLoading} users={users} />
-                  <PaginationUsers
-                    currentPage={currentPageUsers}
-                    pagesCount={pagesCountUsers}
-                  />
                 </Col>
                 <Col>
                   <NumberRepos
@@ -79,6 +75,10 @@ const Home = () => {
               </Row>
             )
         }
+        <PaginationUsers
+          currentPage={currentPageUsers}
+          pagesCount={pagesCountUsers}
+        />
       </Col>
       <Col xs={23} sm={23} md={23} lg={11} xl={11} xxl={11} className="right-side">
         <DetailRoute />

@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { stat } from 'fs';
 import gitHubService from '../../dal/GitHubService';
 
 export const fetchUserRepo:any = createAsyncThunk(
@@ -22,6 +21,10 @@ export const userRepo = createSlice({
     setCurrentPageUserRepo(state, action) {
       state.currentPage = action.payload;
     },
+    clearData(state) {
+      state.currentPage = 1;
+      state.data = [];
+    },
   },
   extraReducers: {
     [fetchUserRepo.pending]: (state, action) => {
@@ -43,4 +46,4 @@ export const userRepo = createSlice({
 
 export default userRepo.reducer;
 
-export const { setCurrentPageUserRepo } = userRepo.actions;
+export const { setCurrentPageUserRepo, clearData } = userRepo.actions;
