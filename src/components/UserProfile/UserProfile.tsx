@@ -10,7 +10,7 @@ interface UserProps {
 
 const UserProfile = ({ user, isLoading }: UserProps) => (
   isLoading
-    ? <Spin size="large" />
+    ? <Spin size="large" spinning={isLoading} />
     : (
       <>
         <Col>

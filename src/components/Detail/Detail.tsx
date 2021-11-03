@@ -19,7 +19,7 @@ import './Detail.scss';
 const Detail = () => {
   const dispatch = useDispatch();
   const { userName } = useParams<{userName: string}>();
-  const [repos, setRepos] = useState('');
+  const [repoName, setRepoName] = useState('');
   const userRepo = useSelector(selectUserRepoData);
   const repoIsLoading = useSelector(selectUserRepoIsLoading);
   const currentPageUserRepo = useSelector(selectUserRepoCurrentPage);
@@ -27,25 +27,34 @@ const Detail = () => {
   const userIsLoading = useSelector(selectUserIsLoading);
   const totalUserRepo = useSelector(selectUserRepoTotalCount);
   const pagesCount = Math.ceil(totalUserRepo / 30);
-
+  const [repos, setRepos] = useState([]);
+  console.log('repos', repos);
   // todo
   // fix query with user`s repos
 
   React.useEffect(() => {
-    dispatch(fetchUserRepo({ userName, repos, currentPageUserRepo }));
-  }, [userName, repos, currentPageUserRepo]);
+    dispatch(fetchUserRepo({ userName, currentPageUserRepo }));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    setRepos([...repos, ...userRepo]);
+  }, [userName, currentPageUserRepo]);
+
+  React.useEffect(() => {
+    dispatch(fetchUserRepo({ userName, repoName }));
+    setRepos(userRepo);
+  }, [userName, repoName]);
 
   React.useEffect(() => {
     dispatch(fetchUser(userName));
   }, [userName]);
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRepos(event.target.value);
+    setRepoName(event.target.value);
   };
 
   const debouncedChangeHandler = useCallback(
     debounce(changeHandler, 500),
-    [repos],
+    [repoName],
   );
 
   const handleScroll = (event: any) => {
@@ -66,18 +75,12 @@ const Detail = () => {
           <Input placeholder="Search for Repos" onChange={debouncedChangeHandler} />
         </Form.Item>
       </Form>
-      {
-        repoIsLoading
-          ? <Spin size="large" className="spiner" />
-          : (
-            <div className="userRepo" onScroll={handleScroll}>
-              <UserProfileRepos
-                userRepo={userRepo}
-                isLoading={repoIsLoading}
-              />
-            </div>
-          )
-      }
+      <div className="userRepo" onScroll={handleScroll}>
+        <UserProfileRepos
+          userRepo={repos}
+          isLoading={repoIsLoading}
+        />
+      </div>
     </>
   );
 };

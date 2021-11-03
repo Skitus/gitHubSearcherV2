@@ -1,9 +1,7 @@
 import React from 'react';
 import { Col, Row, Spin, Typography } from 'antd';
 import { StarOutlined, ForkOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
 import { UserRepo } from '../../types/User.types';
-import { clearData } from '../../store/userRepo/userRepo.slice';
 import './UserProfileRepos.scss';
 
 interface UsersRepoProps {
@@ -13,10 +11,7 @@ interface UsersRepoProps {
 
 const UserProfileRepos = ({ userRepo, isLoading }: UsersRepoProps): any => (
   <>
-    {
-  isLoading
-    ? <Spin size="large" />
-    : (userRepo.map((repo, index) => (
+    {userRepo.map((repo) => (
       <Typography.Link href={repo.html_url} target="_blank" key={repo.html_url}>
         <Row className="repos-user" justify="space-between" align="middle">
           <Col>
@@ -38,8 +33,8 @@ const UserProfileRepos = ({ userRepo, isLoading }: UsersRepoProps): any => (
           </Col>
         </Row>
       </Typography.Link>
-    )))
-}
+    ))}
+    <Spin size="large" spinning={isLoading} />
   </>
 );
 

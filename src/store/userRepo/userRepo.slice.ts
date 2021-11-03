@@ -3,8 +3,8 @@ import gitHubService from '../../dal/GitHubService';
 
 export const fetchUserRepo:any = createAsyncThunk(
   'user/fetchGetUserRepo',
-  async ({ userName, repos, currentPageUserRepo }: any) => {
-    const res: any = await gitHubService.getUserRepos(userName, repos, currentPageUserRepo);
+  async ({ userName, repoName, currentPageUserRepo }: any) => {
+    const res: any = await gitHubService.getUserRepos(userName, repoName, currentPageUserRepo);
     return res;
   },
 );
@@ -32,10 +32,11 @@ export const userRepo = createSlice({
       state.isLoading = true;
     },
     [fetchUserRepo.fulfilled]: (state, action) => {
-      const { items } = action.payload;
+      /*      const { items } = action.payload; */
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      state.data.push(...items);
+      /*      state.data.push(...items); */
+      state.data = action.payload.items;
       state.isLoading = false;
       state.total_count = action.payload.total_count;
     },

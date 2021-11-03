@@ -39,8 +39,8 @@ class GitHubService {
       return res;
     }
 
-    async getUserRepos(userName: string, repos: string, currentPageUserRepo: number) {
-      const res = await axios.get(`${this.BASE_URL}search/repositories?q=${repos} user:${userName} fork:true `, {
+    async getUserRepos(userName: string, repoName: string, currentPageUserRepo: number) {
+      const res = await axios.get(`${this.BASE_URL}search/repositories?q=${repoName || ''} user:${userName} fork:true `, {
         headers: this.headers,
         params: {
           page: currentPageUserRepo || 1,
