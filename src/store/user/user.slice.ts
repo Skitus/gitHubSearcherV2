@@ -18,7 +18,7 @@ export const user = createSlice({
 
   extraReducers: {
     [fetchUser.pending]: (state, action) => {
-      state.isLoading = false;
+      state.isLoading = true;
     },
     [fetchUser.fulfilled]: (state, action) => {
       state.data = action.payload;

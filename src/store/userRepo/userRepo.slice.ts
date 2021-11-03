@@ -23,12 +23,13 @@ export const userRepo = createSlice({
     },
     clearData(state) {
       state.currentPage = 1;
+      state.isLoading = true;
       state.data = [];
     },
   },
   extraReducers: {
     [fetchUserRepo.pending]: (state, action) => {
-      state.isLoading = false;
+      state.isLoading = true;
     },
     [fetchUserRepo.fulfilled]: (state, action) => {
       const { items } = action.payload;

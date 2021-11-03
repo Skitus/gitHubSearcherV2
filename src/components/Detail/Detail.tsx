@@ -1,9 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Form, Input, Row } from 'antd';
+import { Col, Form, Input, Row, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { clearData, fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
+import { fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
 import { fetchUser } from '../../store/user/user.slice';
 import {
   selectUserRepoCurrentPage,
@@ -28,12 +28,8 @@ const Detail = () => {
   const totalUserRepo = useSelector(selectUserRepoTotalCount);
   const pagesCount = Math.ceil(totalUserRepo / 30);
 
-  console.log('fetchUserRepo', userRepo);
-  console.log('repos', repos);
-
   // todo
   // fix query with user`s repos
-  // fix bug with infiniti scroll
 
   React.useEffect(() => {
     dispatch(fetchUserRepo({ userName, repos, currentPageUserRepo }));
@@ -70,12 +66,18 @@ const Detail = () => {
           <Input placeholder="Search for Repos" onChange={debouncedChangeHandler} />
         </Form.Item>
       </Form>
-      <div className="userRepo" onScroll={handleScroll}>
-        <UserProfileRepos
-          userRepo={userRepo}
-          isLoading={repoIsLoading}
-        />
-      </div>
+      {
+        repoIsLoading
+          ? <Spin size="large" className="spiner" />
+          : (
+            <div className="userRepo" onScroll={handleScroll}>
+              <UserProfileRepos
+                userRepo={userRepo}
+                isLoading={repoIsLoading}
+              />
+            </div>
+          )
+      }
     </>
   );
 };

@@ -25,7 +25,7 @@ export const users = createSlice({
   },
   extraReducers: {
     [fetchUsers.pending]: (state, action) => {
-      state.isLoading = false;
+      state.isLoading = true;
     },
     [fetchUsers.fulfilled]: (state, action) => {
       state.data = action.payload.data.items;
@@ -34,7 +34,7 @@ export const users = createSlice({
       state.per_page = action.payload.per_page;
     },
     [fetchUsers.rejected]: (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
     },
   },
 });

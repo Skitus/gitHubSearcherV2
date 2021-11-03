@@ -19,7 +19,7 @@ export const usersRepos = createSlice({
 
   extraReducers: {
     [fetchUsersRepo.pending]: (state, action) => {
-      state.isLoading = false;
+      state.isLoading = true;
     },
     [fetchUsersRepo.fulfilled]: (state, action) => {
       state.usersRepo = action.payload;
