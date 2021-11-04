@@ -37,10 +37,10 @@ const Home = () => {
   }, [userName, currentPageUsers]);
 
   React.useEffect(() => {
-    if (users) {
+    if (!isLoading) {
       dispatch(fetchUsersRepo(users));
     }
-  }, [users]);
+  }, [users, isLoading]);
 
   const changeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
@@ -59,22 +59,17 @@ const Home = () => {
             <Input placeholder="Search for Users" onChange={debouncedChangeHandler} />
           </Form.Item>
         </Form>
-        {
-          reposIsLoading
-            ? <Spin size="large" className="spiner" />
-            : (
-              <Row justify="space-between" align="top">
-                <Col>
-                  <AllUsers isLoading={isLoading} users={users} />
-                </Col>
-                <Col>
-                  <NumberRepos
-                    usersRepo={repos}
-                  />
-                </Col>
-              </Row>
-            )
-        }
+        <Row justify="space-between" align="top">
+          <Col>
+            <AllUsers users={users} />
+          </Col>
+          <Col>
+            <NumberRepos
+              usersRepo={repos}
+            />
+          </Col>
+        </Row>
+        <Spin size="large" className="loader" spinning={reposIsLoading} />
         <PaginationUsers
           currentPage={currentPageUsers}
           pagesCount={pagesCountUsers}

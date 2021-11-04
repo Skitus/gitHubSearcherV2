@@ -27,22 +27,13 @@ const Detail = () => {
   const userIsLoading = useSelector(selectUserIsLoading);
   const totalUserRepo = useSelector(selectUserRepoTotalCount);
   const pagesCount = Math.ceil(totalUserRepo / 30);
-  const [repos, setRepos] = useState([]);
-  console.log('repos', repos);
+
   // todo
   // fix query with user`s repos
 
   React.useEffect(() => {
-    dispatch(fetchUserRepo({ userName, currentPageUserRepo }));
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    setRepos([...repos, ...userRepo]);
-  }, [userName, currentPageUserRepo]);
-
-  React.useEffect(() => {
-    dispatch(fetchUserRepo({ userName, repoName }));
-    setRepos(userRepo);
-  }, [userName, repoName]);
+    dispatch(fetchUserRepo({ userName, repoName, currentPageUserRepo }));
+  }, [userName, repoName, currentPageUserRepo]);
 
   React.useEffect(() => {
     dispatch(fetchUser(userName));
@@ -58,10 +49,12 @@ const Detail = () => {
   );
 
   const handleScroll = (event: any) => {
-    const { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
-    if (Math.ceil(scrollHeight - scrollTop) === clientHeight
+    if (repoIsLoading === false) {
+      const { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
+      if (Math.floor(scrollHeight - scrollTop) === clientHeight
           && currentPageUserRepo < pagesCount) {
-      dispatch(setCurrentPageUserRepo(currentPageUserRepo + 1));
+        dispatch(setCurrentPageUserRepo(currentPageUserRepo + 1));
+      }
     }
   };
 
@@ -77,7 +70,7 @@ const Detail = () => {
       </Form>
       <div className="userRepo" onScroll={handleScroll}>
         <UserProfileRepos
-          userRepo={repos}
+          userRepo={userRepo}
           isLoading={repoIsLoading}
         />
       </div>

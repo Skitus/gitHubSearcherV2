@@ -32,11 +32,11 @@ export const userRepo = createSlice({
       state.isLoading = true;
     },
     [fetchUserRepo.fulfilled]: (state, action) => {
-      /*      const { items } = action.payload; */
+      const { items } = action.payload;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      /*      state.data.push(...items); */
-      state.data = action.payload.items;
+      state.data.push(...items);
+      /*      state.data = action.payload.items; */
       state.isLoading = false;
       state.total_count = action.payload.total_count;
     },

@@ -7,32 +7,28 @@ import { clearData } from '../../store/userRepo/userRepo.slice';
 import './Users.scss';
 
 interface UsersProps {
-    users: Users[],
-    isLoading: boolean
+    users: Users[]
 }
 
-const AllUsers = ({ isLoading, users }: UsersProps): any => {
+const AllUsers = ({ users }: UsersProps): any => {
   const dispatch = useDispatch();
   const handleClearData = () => {
     console.log('delete');
     dispatch(clearData());
   };
   return (
-    isLoading
-      ? <Spin size="large" />
-      : (users.map((obj) => (
-        <Link to={obj.login} key={obj.id} onClick={() => handleClearData()}>
-          <Row className="users" justify="space-between" align="middle" key={obj.id}>
-            <Image
-              width={100}
-              height={100}
-              src={obj.avatar_url}
-            />
-            <Typography.Text strong>{obj.login}</Typography.Text>
-          </Row>
-        </Link>
-      ))
-      )
+    (users.map((obj) => (
+      <Link to={obj.login} key={obj.id} onClick={() => handleClearData()}>
+        <Row className="users" justify="space-between" align="middle" key={obj.id}>
+          <Image
+            width={100}
+            height={100}
+            src={obj.avatar_url}
+          />
+          <Typography.Text strong>{obj.login}</Typography.Text>
+        </Row>
+      </Link>
+    )))
   );
 };
 
