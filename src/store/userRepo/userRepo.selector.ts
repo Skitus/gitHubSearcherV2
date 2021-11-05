@@ -21,3 +21,8 @@ export const selectUserRepoTotalCount = createSelector(
   selectUsers,
   (state) => state.total_count,
 );
+
+export const selectUserRepoPerPage = createSelector(
+  selectUsers,
+  (state) => state.per_page,
+);

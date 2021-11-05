@@ -3,18 +3,21 @@ import debounce from 'lodash.debounce';
 import { Col, Form, Input, Row, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
+import { clearData, fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
 import { fetchUser } from '../../store/user/user.slice';
 import {
   selectUserRepoCurrentPage,
   selectUserRepoData,
-  selectUserRepoIsLoading,
+  selectUserRepoIsLoading, selectUserRepoPerPage,
   selectUserRepoTotalCount,
 } from '../../store/userRepo/userRepo.selector';
 import { selectUserData, selectUserIsLoading } from '../../store/user/user.selector';
 import UserProfile from '../UserProfile/UserProfile';
 import UserProfileRepos from '../UserProfileRepos/UserProfileRepos';
 import './Detail.scss';
+
+// todo change pagination
+// todo add offsetheight
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -26,10 +29,8 @@ const Detail = () => {
   const user = useSelector(selectUserData);
   const userIsLoading = useSelector(selectUserIsLoading);
   const totalUserRepo = useSelector(selectUserRepoTotalCount);
-  const pagesCount = Math.ceil(totalUserRepo / 30);
-
-  // todo
-  // fix query with user`s repos
+  const perPageUserRepo = useSelector(selectUserRepoPerPage);
+  const pagesCount = Math.ceil(totalUserRepo / perPageUserRepo);
 
   React.useEffect(() => {
     dispatch(fetchUserRepo({ userName, repoName, currentPageUserRepo }));
@@ -41,6 +42,7 @@ const Detail = () => {
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRepoName(event.target.value);
+    dispatch(clearData());
   };
 
   const debouncedChangeHandler = useCallback(

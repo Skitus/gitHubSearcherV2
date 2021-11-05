@@ -22,25 +22,24 @@ const Home = () => {
   const dispatch = useDispatch();
   const [userName, setUserName] = useState('');
   const users = useSelector(selectUsersData);
-  const isLoading = useSelector(selectUsersIsLoading);
+  const usersIsLoading = useSelector(selectUsersIsLoading);
   const currentPageUsers = useSelector(selectUsersCurrentPage);
   let total = useSelector(selectUsersTotalCount);
   const repos = useSelector(selectUsersRepositories);
   const reposIsLoading = useSelector(selectUsersRepoIsLoading);
-  const usersParam = useSelector(selectUsersPerPage);
-
+  const perPageUsers = useSelector(selectUsersPerPage);
   total = Math.ceil(total) > 1000 ? 1000 : total;
-  const pagesCountUsers = Math.ceil(total / usersParam);
+  const pagesCountUsers = Math.ceil(total / perPageUsers);
 
   React.useEffect(() => {
     dispatch(fetchUsers({ userName, currentPageUsers }));
   }, [userName, currentPageUsers]);
 
   React.useEffect(() => {
-    if (!isLoading) {
+    if (!usersIsLoading) {
       dispatch(fetchUsersRepo(users));
     }
-  }, [users, isLoading]);
+  }, [users, usersIsLoading]);
 
   const changeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
@@ -59,17 +58,22 @@ const Home = () => {
             <Input placeholder="Search for Users" onChange={debouncedChangeHandler} />
           </Form.Item>
         </Form>
-        <Row justify="space-between" align="top">
-          <Col>
-            <AllUsers users={users} />
-          </Col>
-          <Col>
-            <NumberRepos
-              usersRepo={repos}
-            />
-          </Col>
-        </Row>
-        <Spin size="large" className="loader" spinning={reposIsLoading} />
+        {
+          reposIsLoading
+            ? <Spin className="loader" size="large" spinning={reposIsLoading} />
+            : (
+              <Row justify="space-between" align="top">
+                <Col>
+                  <AllUsers users={users} />
+                </Col>
+                <Col>
+                  <NumberRepos
+                    usersRepo={repos}
+                  />
+                </Col>
+              </Row>
+            )
+        }
         <PaginationUsers
           currentPage={currentPageUsers}
           pagesCount={pagesCountUsers}

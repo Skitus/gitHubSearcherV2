@@ -9,6 +9,8 @@ export const fetchUserRepo:any = createAsyncThunk(
   },
 );
 
+// todo add offset
+
 export const userRepo = createSlice({
   name: 'getUsers',
   initialState: {
@@ -16,6 +18,7 @@ export const userRepo = createSlice({
     isLoading: true,
     currentPage: 1,
     total_count: 0,
+    per_page: 30,
   },
   reducers: {
     setCurrentPageUserRepo(state, action) {
@@ -23,8 +26,8 @@ export const userRepo = createSlice({
     },
     clearData(state) {
       state.currentPage = 1;
-      state.isLoading = true;
       state.data = [];
+      state.isLoading = true;
     },
   },
   extraReducers: {
@@ -32,13 +35,13 @@ export const userRepo = createSlice({
       state.isLoading = true;
     },
     [fetchUserRepo.fulfilled]: (state, action) => {
-      const { items } = action.payload;
+      const { items } = action.payload.data;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       state.data.push(...items);
-      /*      state.data = action.payload.items; */
       state.isLoading = false;
-      state.total_count = action.payload.total_count;
+      state.total_count = action.payload.data.total_count;
+      state.per_page = action.payload.per_page;
     },
     [fetchUserRepo.rejected]: (state, action) => {
       state.isLoading = false;
