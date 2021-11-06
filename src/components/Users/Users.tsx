@@ -13,7 +13,6 @@ interface UsersProps {
 const AllUsers = ({ users }: UsersProps): any => {
   const dispatch = useDispatch();
   const handleClearData = () => {
-    console.log('delete');
     dispatch(clearData());
   };
   return (

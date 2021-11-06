@@ -1,6 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Col, Form, Input, Row, Spin } from 'antd';
+import { Form, Input, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { clearData, fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
@@ -17,7 +17,7 @@ import UserProfileRepos from '../UserProfileRepos/UserProfileRepos';
 import './Detail.scss';
 
 // todo change pagination
-// todo add offsetheight
+// todo change any in ts
 
 const Detail = () => {
   const dispatch = useDispatch();
@@ -40,21 +40,24 @@ const Detail = () => {
     dispatch(fetchUser(userName));
   }, [userName]);
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeRepoName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRepoName(event.target.value);
     dispatch(clearData());
   };
 
   const debouncedChangeHandler = useCallback(
-    debounce(changeHandler, 500),
+    debounce(changeRepoName, 500),
     [repoName],
   );
 
   const handleScroll = (event: any) => {
     if (repoIsLoading === false) {
-      const { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
-      if (Math.floor(scrollHeight - scrollTop) === clientHeight
+      // eslint-disable-next-line prefer-const
+      let { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
+      if (Math.floor(scrollHeight - scrollTop) < (clientHeight + (scrollHeight * 0.2))
           && currentPageUserRepo < pagesCount) {
+        event.currentTarget.scrollTop = (clientHeight
+            + (scrollHeight * (0.1 * currentPageUserRepo)));
         dispatch(setCurrentPageUserRepo(currentPageUserRepo + 1));
       }
     }
