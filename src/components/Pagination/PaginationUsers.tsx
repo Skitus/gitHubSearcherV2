@@ -12,7 +12,7 @@ interface PaginationProps{
 
 const PaginationUsers = ({ currentPage, pagesCount }: PaginationProps) => {
   const dispatch = useDispatch();
-  const pages: any = [];
+  const pages: number[] = [];
   const FIRST_PAGE = 1;
   createPages(pages, pagesCount, currentPage);
   return (

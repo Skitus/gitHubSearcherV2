@@ -19,4 +19,7 @@ export function createPages(pages: any, pagesCount: any, currentPage: any) {
       pages.push(i);
     }
   }
+  return pages;
 }
+
+// return pages

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Col, Form, Input, Row, Spin } from 'antd';
+import { Col, Form, Input, Row, Skeleton, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { DetailRoute } from '../../routes/Routes';
 import Title from '../Title/Title';
@@ -16,6 +16,7 @@ import AllUsers from '../Users/Users';
 import NumberRepos from '../NumberRepos/NumberRepos';
 import { selectUsersRepoIsLoading, selectUsersRepositories } from '../../store/usersRepos/usersRepo.selector';
 import PaginationUsers from '../Pagination/PaginationUsers';
+import Loader from '../Loader/Loader';
 import './Home.scss';
 
 const Home = () => {
@@ -60,7 +61,7 @@ const Home = () => {
         </Form>
         {
           reposIsLoading
-            ? <Spin className="loader" size="large" spinning={reposIsLoading} />
+            ? <Loader isLoading={reposIsLoading} perPage={perPageUsers} />
             : (
               <Row justify="space-between" align="top">
                 <Col>

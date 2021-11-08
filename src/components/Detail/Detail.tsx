@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Form, Input, Row } from 'antd';
+import { Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import classnames from 'classnames';
 import { clearData, fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
 import { fetchUser } from '../../store/user/user.slice';
 import {
@@ -16,9 +17,6 @@ import UserProfile from '../UserProfile/UserProfile';
 import UserProfileRepos from '../UserProfileRepos/UserProfileRepos';
 import './Detail.scss';
 
-// todo change pagination
-// todo change any in ts
-
 const Detail = () => {
   const dispatch = useDispatch();
   const { userName } = useParams<{userName: string}>();
@@ -31,6 +29,7 @@ const Detail = () => {
   const totalUserRepo = useSelector(selectUserRepoTotalCount);
   const perPageUserRepo = useSelector(selectUserRepoPerPage);
   const pagesCount = Math.ceil(totalUserRepo / perPageUserRepo);
+  const userRepoBlock = React.useRef<HTMLHeadingElement>(null);
 
   React.useEffect(() => {
     dispatch(fetchUserRepo({ userName, repoName, currentPageUserRepo }));
@@ -57,7 +56,7 @@ const Detail = () => {
       if (Math.floor(scrollHeight - scrollTop) < (clientHeight + (scrollHeight * 0.2))
           && currentPageUserRepo < pagesCount) {
         event.currentTarget.scrollTop = (clientHeight
-            + (scrollHeight * (0.1 * currentPageUserRepo)));
+            + (scrollHeight * (0.2 * currentPageUserRepo)));
         dispatch(setCurrentPageUserRepo(currentPageUserRepo + 1));
       }
     }
@@ -65,15 +64,19 @@ const Detail = () => {
 
   return (
     <>
-      <Row justify="center" align="top" gutter={20}>
-        <UserProfile user={user} isLoading={userIsLoading} />
-      </Row>
+      <UserProfile user={user} isLoading={userIsLoading} />
       <Form>
         <Form.Item>
           <Input placeholder="Search for Repos" onChange={debouncedChangeHandler} />
         </Form.Item>
       </Form>
-      <div className="userRepo" onScroll={handleScroll}>
+      <div
+        className={classnames(
+          repoIsLoading ? 'userRepo-non-scroll' : 'userRepo-scroll',
+        )}
+        ref={userRepoBlock}
+        onScroll={handleScroll}
+      >
         <UserProfileRepos
           userRepo={userRepo}
           isLoading={repoIsLoading}
