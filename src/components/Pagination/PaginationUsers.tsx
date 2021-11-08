@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Row } from 'antd';
 import { useDispatch } from 'react-redux';
+import classNames from 'classnames';
 import { createPages } from './createPages';
 import { setCurrentPageUsers } from '../../store/users/users.slice';
 import './Pagination.scss';
@@ -28,9 +29,9 @@ const PaginationUsers = ({ currentPage, pagesCount }: PaginationProps) => {
           <span className="three-dot">&hellip;</span>
         </>
       ) : ('')}
-      {pages.map((page: any) => (
+      {pages.map((page: number) => (
         <Button
-          className={`${currentPage === page ? 'active' : 'pages-items'}`}
+          className={classNames(currentPage === page ? 'active' : 'pages-items')}
           key={page}
           onClick={() => dispatch(setCurrentPageUsers(page))}
         >

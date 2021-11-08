@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { Col, Form, Input, Row, Skeleton, Spin } from 'antd';
+import { Col, Form, Input, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { DetailRoute } from '../../routes/Routes';
 import Title from '../Title/Title';
@@ -10,11 +10,14 @@ import {
   selectUsersIsLoading, selectUsersPerPage,
   selectUsersTotalCount,
 } from '../../store/users/users.selector';
+import {
+  selectUsersRepoIsLoading,
+  selectUsersRepositories,
+} from '../../store/usersRepos/usersRepo.selector';
 import { fetchUsers } from '../../store/users/users.slice';
 import { fetchUsersRepo } from '../../store/usersRepos/usersRepo.slice';
 import AllUsers from '../Users/Users';
 import NumberRepos from '../NumberRepos/NumberRepos';
-import { selectUsersRepoIsLoading, selectUsersRepositories } from '../../store/usersRepos/usersRepo.selector';
 import PaginationUsers from '../Pagination/PaginationUsers';
 import Loader from '../Loader/Loader';
 import './Home.scss';
@@ -25,12 +28,12 @@ const Home = () => {
   const users = useSelector(selectUsersData);
   const usersIsLoading = useSelector(selectUsersIsLoading);
   const currentPageUsers = useSelector(selectUsersCurrentPage);
-  let total = useSelector(selectUsersTotalCount);
+  const perPageUsers = useSelector(selectUsersPerPage);
+  let totalUsers = useSelector(selectUsersTotalCount);
   const repos = useSelector(selectUsersRepositories);
   const reposIsLoading = useSelector(selectUsersRepoIsLoading);
-  const perPageUsers = useSelector(selectUsersPerPage);
-  total = Math.ceil(total) > 1000 ? 1000 : total;
-  const pagesCountUsers = Math.ceil(total / perPageUsers);
+  totalUsers = Math.ceil(totalUsers) > 1000 ? 1000 : totalUsers;
+  const pagesCountUsers = Math.ceil(totalUsers / perPageUsers);
 
   React.useEffect(() => {
     dispatch(fetchUsers({ userName, currentPageUsers }));
@@ -42,21 +45,21 @@ const Home = () => {
     }
   }, [users, usersIsLoading]);
 
-  const changeUserName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeUserName = (event: ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
   };
 
-  const debouncedChangeHandler = useCallback(
+  const debounceChangeUserName = useCallback(
     debounce(changeUserName, 500), [userName],
   );
 
   return (
     <Row justify="space-around" align="top">
-      <Col xs={23} sm={23} md={23} lg={11} xl={11} xxl={11} className="left-side">
+      <Col className="left-side" xs={23} sm={23} md={23} lg={11} xl={11} xxl={11}>
         <Title />
         <Form>
           <Form.Item>
-            <Input placeholder="Search for Users" onChange={debouncedChangeHandler} />
+            <Input placeholder="Search for Users" onChange={debounceChangeUserName} />
           </Form.Item>
         </Form>
         {
@@ -80,7 +83,7 @@ const Home = () => {
           pagesCount={pagesCountUsers}
         />
       </Col>
-      <Col xs={23} sm={23} md={23} lg={11} xl={11} xxl={11} className="right-side">
+      <Col className="right-side" xs={23} sm={23} md={23} lg={11} xl={11} xxl={11}>
         <DetailRoute />
       </Col>
     </Row>

@@ -9,8 +9,8 @@ interface UsersReposProps {
 
 const NumberRepos = ({ usersRepo }: UsersReposProps): any => (
   (usersRepo.map((repo) => (
-    <div key={repo.id} className="blockRepos">
-      <Typography.Paragraph className="repo-number">
+    <div className="block-repos" key={repo.id}>
+      <Typography.Paragraph className="repo-number" strong>
         Repo:
         {' '}
         {repo.length}

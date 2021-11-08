@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Row, Spin, Typography } from 'antd';
+import { Image, Row, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Users } from '../../types/User.types';

@@ -5,7 +5,7 @@ class GitHubService {
 
     readonly BASE_URL = 'https://api.github.com/';
 
-    async getAllUsers(userName: string, currentPageUsers:number) {
+    async getAllUsers(userName: string, currentPageUsers: number) {
       const res = await axios.get(`${this.BASE_URL}search/users`, {
         headers: this.headers,
         params: {

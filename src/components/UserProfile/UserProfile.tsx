@@ -10,7 +10,7 @@ interface UserProps {
 
 const UserProfile = ({ user, isLoading }: UserProps) => (
   <Row justify="center" align="middle" gutter={20}>
-    <Skeleton className="flex" loading={isLoading} active avatar={{ shape: 'square', size: 110 }}>
+    <Skeleton className="skeleton-wrapper" active avatar={{ shape: 'square', size: 110 }} loading={isLoading}>
       <Col>
         <Image
           width={200}
@@ -27,10 +27,12 @@ const UserProfile = ({ user, isLoading }: UserProps) => (
           <Typography.Paragraph strong>{user.bio}</Typography.Paragraph>
           <Typography.Paragraph strong>
             Followers:
+            {' '}
             {user.followers}
           </Typography.Paragraph>
           <Typography.Paragraph strong>
             Following:
+            {' '}
             {user.following}
           </Typography.Paragraph>
         </Typography>

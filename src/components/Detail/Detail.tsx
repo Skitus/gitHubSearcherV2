@@ -1,9 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { SyntheticEvent, useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
 import { Form, Input } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import classnames from 'classnames';
 import { clearData, fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
 import { fetchUser } from '../../store/user/user.slice';
 import {
@@ -24,12 +23,11 @@ const Detail = () => {
   const userRepo = useSelector(selectUserRepoData);
   const repoIsLoading = useSelector(selectUserRepoIsLoading);
   const currentPageUserRepo = useSelector(selectUserRepoCurrentPage);
-  const user = useSelector(selectUserData);
-  const userIsLoading = useSelector(selectUserIsLoading);
   const totalUserRepo = useSelector(selectUserRepoTotalCount);
   const perPageUserRepo = useSelector(selectUserRepoPerPage);
+  const user = useSelector(selectUserData);
+  const userIsLoading = useSelector(selectUserIsLoading);
   const pagesCount = Math.ceil(totalUserRepo / perPageUserRepo);
-  const userRepoBlock = React.useRef<HTMLHeadingElement>(null);
 
   React.useEffect(() => {
     dispatch(fetchUserRepo({ userName, repoName, currentPageUserRepo }));
@@ -49,7 +47,7 @@ const Detail = () => {
     [repoName],
   );
 
-  const handleScroll = (event: any) => {
+  const handleScroll = (event: SyntheticEvent) => {
     if (repoIsLoading === false) {
       // eslint-disable-next-line prefer-const
       let { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
@@ -71,10 +69,7 @@ const Detail = () => {
         </Form.Item>
       </Form>
       <div
-        className={classnames(
-          repoIsLoading ? 'userRepo-non-scroll' : 'userRepo-scroll',
-        )}
-        ref={userRepoBlock}
+        className="userRepo-scroll"
         onScroll={handleScroll}
       >
         <UserProfileRepos
