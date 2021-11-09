@@ -16,6 +16,8 @@ const PaginationUsers = ({ currentPage, pagesCount }: PaginationProps) => {
   const pages: number[] = [];
   const FIRST_PAGE = 1;
   createPages(pages, pagesCount, currentPage);
+  console.log('currentPage', currentPage);
+  console.log('pagesCount', pagesCount);
   return (
     <Row justify="center" align="middle">
       {currentPage >= 5 ? (
@@ -38,13 +40,18 @@ const PaginationUsers = ({ currentPage, pagesCount }: PaginationProps) => {
           {page}
         </Button>
       ))}
-      <span>&hellip;</span>
-      <Button
-        className="pages-items"
-        onClick={() => dispatch(setCurrentPageUsers(pagesCount))}
-      >
-        {pagesCount}
-      </Button>
+      {currentPage === pagesCount || currentPage + 3 >= pagesCount ? null
+        : (
+          <>
+            <span>&hellip;</span>
+            <Button
+              className="pages-items"
+              onClick={() => dispatch(setCurrentPageUsers(pagesCount))}
+            >
+              {pagesCount}
+            </Button>
+          </>
+        )}
     </Row>
   );
 };
