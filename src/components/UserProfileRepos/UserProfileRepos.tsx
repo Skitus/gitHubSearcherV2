@@ -21,12 +21,12 @@ const UserProfileRepos = ({ userRepo, isLoading }: UsersRepoProps): any => (
             <Typography.Paragraph>
               Forks
               <ForkOutlined />
-              {' '}
+               &nbsp;
               {repo.forks_count}
             </Typography.Paragraph>
             <Typography.Text>
               Stars
-              {' '}
+              &nbsp;
               <StarOutlined />
               {repo.stargazers_count}
             </Typography.Text>

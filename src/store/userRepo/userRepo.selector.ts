@@ -1,28 +1,28 @@
 import { createSelector } from 'reselect';
 
-export const selectUsers = (state: any) => state.userRepo;
+export const selectUserRepo = (state: any) => state.userRepo;
 
 export const selectUserRepoData = createSelector(
-  selectUsers,
+  selectUserRepo,
   (state) => state.data,
 );
 
 export const selectUserRepoIsLoading = createSelector(
-  selectUsers,
+  selectUserRepo,
   (state) => state.isLoading,
 );
 
 export const selectUserRepoCurrentPage = createSelector(
-  selectUsers,
+  selectUserRepo,
   (state) => state.currentPage,
 );
 
 export const selectUserRepoTotalCount = createSelector(
-  selectUsers,
+  selectUserRepo,
   (state) => state.total_count,
 );
 
 export const selectUserRepoPerPage = createSelector(
-  selectUsers,
+  selectUserRepo,
   (state) => state.per_page,
 );

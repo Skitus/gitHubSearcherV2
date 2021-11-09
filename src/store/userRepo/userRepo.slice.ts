@@ -1,15 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import gitHubService from '../../dal/GitHubService';
 
-export const fetchUserRepo:any = createAsyncThunk(
+interface FetchUserRepoProps {
+  userName: string,
+  repoName: string,
+  currentPageUserRepo: number
+}
+
+export const fetchUserRepo: any = createAsyncThunk(
   'user/fetchGetUserRepo',
-  async ({ userName, repoName, currentPageUserRepo }: any) => {
+  async ({ userName, repoName, currentPageUserRepo }: FetchUserRepoProps) => {
     const res: any = await gitHubService.getUserRepos(userName, repoName, currentPageUserRepo);
     return res;
   },
 );
-
-// todo add offset
 
 export const userRepo = createSlice({
   name: 'getUsers',

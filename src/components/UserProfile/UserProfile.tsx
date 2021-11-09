@@ -27,12 +27,12 @@ const UserProfile = ({ user, isLoading }: UserProps) => (
           <Typography.Paragraph strong>{user.bio}</Typography.Paragraph>
           <Typography.Paragraph strong>
             Followers:
-            {' '}
+            &nbsp;
             {user.followers}
           </Typography.Paragraph>
           <Typography.Paragraph strong>
             Following:
-            {' '}
+            &nbsp;
             {user.following}
           </Typography.Paragraph>
         </Typography>

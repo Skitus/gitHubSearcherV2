@@ -48,7 +48,7 @@ const Detail = () => {
   );
 
   const handleScroll = (event: SyntheticEvent) => {
-    if (repoIsLoading === false) {
+    if (!repoIsLoading) {
       // eslint-disable-next-line prefer-const
       let { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
       if (Math.floor(scrollHeight - scrollTop) < (clientHeight + (scrollHeight * 0.2))

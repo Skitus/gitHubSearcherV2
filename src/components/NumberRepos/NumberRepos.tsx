@@ -12,7 +12,7 @@ const NumberRepos = ({ usersRepo }: UsersReposProps): any => (
     <div className="block-repos" key={repo.id}>
       <Typography.Paragraph className="repo-number" strong>
         Repo:
-        {' '}
+        &nbsp;
         {repo.length}
       </Typography.Paragraph>
     </div>

@@ -3,7 +3,7 @@ import gitHubService from '../../dal/GitHubService';
 
 export const fetchUser:any = createAsyncThunk(
   'user/fetchGetUser',
-  async (userName:string) => await gitHubService.getUserById(userName),
+  async (userName: string) => await gitHubService.getUserById(userName),
 );
 
 export const user = createSlice({

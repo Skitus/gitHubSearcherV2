@@ -27,16 +27,13 @@ class GitHubService {
       return res.data;
     }
 
-    getAllUsersRepos(users: []) {
-      const res: any = Promise.all(users.map(
-        (user: { repos_url: string }) => axios.get(user.repos_url, {
-          params: {
-            per_page: 30,
-          },
-        })
-          .then((response) => (response.data)),
-      ));
-      return res;
+    getAllUsersRepos(data: []) {
+      return Promise.all(data.map((user: any) => axios.get(`${this.BASE_URL}search/repositories?q= user:${user.login} fork:true `, {
+        params: {
+          per_page: 1,
+        },
+      })
+        .then((response) => (response.data))));
     }
 
     async getUserRepos(userName: string, repoName: string, currentPageUserRepo: number) {

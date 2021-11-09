@@ -1,9 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import gitHubService from '../../dal/GitHubService';
 
+interface FetchUsersProps {
+  userName: string,
+  currentPageUsers: number
+}
+
 export const fetchUsers:any = createAsyncThunk(
   'users/fetchGetUsers',
-  async ({ userName, currentPageUsers }: any) => {
+  async ({ userName, currentPageUsers }: FetchUsersProps) => {
     const res: any = await gitHubService.getAllUsers(userName, currentPageUsers);
     return res;
   },
