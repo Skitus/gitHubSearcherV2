@@ -16,8 +16,6 @@ const PaginationUsers = ({ currentPage, pagesCount }: PaginationProps) => {
   const pages: number[] = [];
   const FIRST_PAGE = 1;
   createPages(pages, pagesCount, currentPage);
-  console.log('currentPage', currentPage);
-  console.log('pagesCount', pagesCount);
   return (
     <Row justify="center" align="middle">
       {currentPage >= 5 ? (
