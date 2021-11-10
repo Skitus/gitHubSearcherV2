@@ -8,12 +8,13 @@ import { fetchUser } from '../../store/user/user.slice';
 import {
   selectUserRepoCurrentPage,
   selectUserRepoData,
-  selectUserRepoIsLoading, selectUserRepoPerPage,
+  selectUserRepoIsLoading,
   selectUserRepoTotalCount,
 } from '../../store/userRepo/userRepo.selector';
 import { selectUserData, selectUserIsLoading } from '../../store/user/user.selector';
 import UserProfile from '../UserProfile/UserProfile';
 import UserProfileRepos from '../UserProfileRepos/UserProfileRepos';
+import { REPOSITORIES_PER_PAGE } from '../../dal/GitHubService';
 import './Detail.scss';
 
 const Detail = () => {
@@ -24,10 +25,9 @@ const Detail = () => {
   const repoIsLoading = useSelector(selectUserRepoIsLoading);
   const currentPageUserRepo = useSelector(selectUserRepoCurrentPage);
   const totalUserRepo = useSelector(selectUserRepoTotalCount);
-  const perPageUserRepo = useSelector(selectUserRepoPerPage);
   const user = useSelector(selectUserData);
   const userIsLoading = useSelector(selectUserIsLoading);
-  const pagesCount = Math.ceil(totalUserRepo / perPageUserRepo);
+  const pagesCount = Math.ceil(totalUserRepo / REPOSITORIES_PER_PAGE);
 
   React.useEffect(() => {
     dispatch(fetchUserRepo({ userName, repoName, currentPageUserRepo }));
@@ -49,12 +49,10 @@ const Detail = () => {
 
   const handleScroll = (event: SyntheticEvent) => {
     if (!repoIsLoading) {
-      // eslint-disable-next-line prefer-const
-      let { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
-      if (Math.floor(scrollHeight - scrollTop) < (clientHeight + (scrollHeight * 0.2))
-          && currentPageUserRepo < pagesCount) {
-        event.currentTarget.scrollTop = (clientHeight
-            + (scrollHeight * (0.2 * currentPageUserRepo)));
+      const { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
+      const isLoadMore = clientHeight + scrollHeight * 0.2 > Math.floor(scrollHeight - scrollTop);
+      const isLastPage = currentPageUserRepo < pagesCount;
+      if (isLoadMore && isLastPage) {
         dispatch(setCurrentPageUserRepo(currentPageUserRepo + 1));
       }
     }
@@ -69,7 +67,7 @@ const Detail = () => {
         </Form.Item>
       </Form>
       <div
-        className="userRepo-scroll"
+        className="user-repo-scroll"
         onScroll={handleScroll}
       >
         <UserProfileRepos

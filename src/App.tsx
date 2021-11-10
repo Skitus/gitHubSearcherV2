@@ -4,7 +4,7 @@ import './App.scss';
 
 function App() {
   return (
-    <div className="max-width">
+    <div className="container">
       <HomeRoute />
     </div>
   );

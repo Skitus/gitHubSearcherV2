@@ -21,8 +21,3 @@ export const selectUsersTotalCount = createSelector(
   selectUsers,
   (state) => state.total_count,
 );
-
-export const selectUsersPerPage = createSelector(
-  selectUsers,
-  (state) => state.per_page,
-);

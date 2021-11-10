@@ -10,6 +10,7 @@ export interface User {
 }
 
 export interface UserRepo {
+    id: number,
     name: string,
     forks_count: number,
     stargazers_count: number,
@@ -24,6 +25,5 @@ export interface Users {
 
 export interface UsersRepos {
     id: number,
-    length: number
+    total_count: number
 }
-

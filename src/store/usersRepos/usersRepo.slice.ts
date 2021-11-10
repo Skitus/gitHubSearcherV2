@@ -3,10 +3,7 @@ import gitHubService from '../../dal/GitHubService';
 
 export const fetchUsersRepo:any = createAsyncThunk(
   'usersRepo/fetchGetUsersRepo',
-  async (users: []) => {
-    const res = await gitHubService.getAllUsersRepos(users);
-    return res;
-  },
+  async (users: []) => await gitHubService.getAllUsersRepos(users),
 );
 
 export const usersRepos = createSlice({

@@ -12,7 +12,7 @@ interface UsersRepoProps {
 const UserProfileRepos = ({ userRepo, isLoading }: UsersRepoProps): any => (
   <>
     {userRepo.map((repo) => (
-      <Typography.Link href={repo.html_url} target="_blank" key={repo.html_url}>
+      <Typography.Link href={repo.html_url} target="_blank" key={repo.id}>
         <Row className="repos-user" justify="space-between" align="middle">
           <Col>
             <Typography.Text>{repo.name}</Typography.Text>
@@ -21,7 +21,7 @@ const UserProfileRepos = ({ userRepo, isLoading }: UsersRepoProps): any => (
             <Typography.Paragraph>
               Forks
               <ForkOutlined />
-               &nbsp;
+                        &nbsp;
               {repo.forks_count}
             </Typography.Paragraph>
             <Typography.Text>

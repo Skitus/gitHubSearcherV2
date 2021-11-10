@@ -7,7 +7,7 @@ import Title from '../Title/Title';
 import {
   selectUsersCurrentPage,
   selectUsersData,
-  selectUsersIsLoading, selectUsersPerPage,
+  selectUsersIsLoading,
   selectUsersTotalCount,
 } from '../../store/users/users.selector';
 import {
@@ -20,6 +20,7 @@ import AllUsers from '../Users/Users';
 import NumberRepos from '../NumberRepos/NumberRepos';
 import PaginationUsers from '../Pagination/PaginationUsers';
 import Loader from '../Loader/Loader';
+import { USERS_PER_PAGE } from '../../dal/GitHubService';
 import './Home.scss';
 
 const Home = () => {
@@ -28,12 +29,11 @@ const Home = () => {
   const users = useSelector(selectUsersData);
   const usersIsLoading = useSelector(selectUsersIsLoading);
   const currentPageUsers = useSelector(selectUsersCurrentPage);
-  const perPageUsers = useSelector(selectUsersPerPage);
   let totalUsers = useSelector(selectUsersTotalCount);
   const repos = useSelector(selectUsersRepositories);
   const reposIsLoading = useSelector(selectUsersRepoIsLoading);
   totalUsers = Math.ceil(totalUsers) > 1000 ? 1000 : totalUsers;
-  const pagesCountUsers = Math.ceil(totalUsers / perPageUsers);
+  const pagesCountUsers = Math.ceil(totalUsers / USERS_PER_PAGE);
 
   React.useEffect(() => {
     dispatch(fetchUsers({ userName, currentPageUsers }));
@@ -64,7 +64,7 @@ const Home = () => {
         </Form>
         {
           reposIsLoading
-            ? <Loader isLoading={reposIsLoading} perPage={perPageUsers} />
+            ? <Loader isLoading={reposIsLoading} perPage={USERS_PER_PAGE} />
             : (
               <Row justify="space-between" align="top">
                 <Col>

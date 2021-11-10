@@ -19,10 +19,5 @@ export const selectUserRepoCurrentPage = createSelector(
 
 export const selectUserRepoTotalCount = createSelector(
   selectUserRepo,
-  (state) => state.total_count,
-);
-
-export const selectUserRepoPerPage = createSelector(
-  selectUserRepo,
-  (state) => state.per_page,
+  (state) => state.totalCount,
 );

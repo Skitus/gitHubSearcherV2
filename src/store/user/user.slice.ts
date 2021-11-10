@@ -12,16 +12,14 @@ export const user = createSlice({
     data: [],
     isLoading: true,
   },
-  reducers: {
-
-  },
+  reducers: {},
 
   extraReducers: {
     [fetchUser.pending]: (state, action) => {
       state.isLoading = true;
     },
     [fetchUser.fulfilled]: (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.data;
       state.isLoading = false;
     },
     [fetchUser.rejected]: (state, action) => {

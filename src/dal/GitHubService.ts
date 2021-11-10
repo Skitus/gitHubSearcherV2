@@ -1,30 +1,28 @@
 import axios from 'axios';
 
+export const USERS_PER_PAGE = 10;
+export const REPOSITORIES_PER_PAGE = 30;
+
 class GitHubService {
     private headers = { Authorization: `token ${process.env.REACT_APP_ACCESS_TOKEN}` };
 
     readonly BASE_URL = 'https://api.github.com/';
 
     async getAllUsers(userName: string, currentPageUsers: number) {
-      const res = await axios.get(`${this.BASE_URL}search/users`, {
+      return await axios.get(`${this.BASE_URL}search/users`, {
         headers: this.headers,
         params: {
-          per_page: 5,
+          per_page: USERS_PER_PAGE,
           q: userName || 'arthur',
           page: currentPageUsers || 1,
         },
       });
-      return {
-        data: res.data,
-        per_page: res.config.params.per_page,
-      };
     }
 
     async getUserById(userName: string) {
-      const res = await axios.get(`${this.BASE_URL}users/${userName}`, {
+      return await axios.get(`${this.BASE_URL}users/${userName}`, {
         headers: this.headers,
       });
-      return res.data;
     }
 
     getAllUsersRepos(data: []) {
@@ -37,17 +35,13 @@ class GitHubService {
     }
 
     async getUserRepos(userName: string, repoName: string, currentPageUserRepo: number) {
-      const res = await axios.get(`${this.BASE_URL}search/repositories?q=${repoName || ''} user:${userName} fork:true `, {
+      return await axios.get(`${this.BASE_URL}search/repositories?q=${repoName || ''} user:${userName} fork:true `, {
         headers: this.headers,
         params: {
-          per_page: 30,
+          per_page: REPOSITORIES_PER_PAGE,
           page: currentPageUserRepo || 1,
         },
       });
-      return {
-        data: res.data,
-        per_page: res.config.params.per_page,
-      };
     }
 }
 

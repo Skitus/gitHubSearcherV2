@@ -9,10 +9,13 @@ interface FetchUserRepoProps {
 
 export const fetchUserRepo: any = createAsyncThunk(
   'user/fetchGetUserRepo',
-  async ({ userName, repoName, currentPageUserRepo }: FetchUserRepoProps) => {
-    const res: any = await gitHubService.getUserRepos(userName, repoName, currentPageUserRepo);
-    return res;
-  },
+  async (
+    {
+      userName,
+      repoName,
+      currentPageUserRepo,
+    }: FetchUserRepoProps,
+  ) => await gitHubService.getUserRepos(userName, repoName, currentPageUserRepo),
 );
 
 export const userRepo = createSlice({
@@ -21,11 +24,11 @@ export const userRepo = createSlice({
     data: [],
     isLoading: true,
     currentPage: 1,
-    total_count: 0,
-    per_page: 30,
+    totalCount: 0,
   },
   reducers: {
     setCurrentPageUserRepo(state, action) {
+      state.isLoading = true;
       state.currentPage = action.payload;
     },
     clearData(state) {
@@ -43,9 +46,8 @@ export const userRepo = createSlice({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       state.data.push(...items);
+      state.totalCount = action.payload.data.total_count;
       state.isLoading = false;
-      state.total_count = action.payload.data.total_count;
-      state.per_page = action.payload.per_page;
     },
     [fetchUserRepo.rejected]: (state, action) => {
       state.isLoading = false;

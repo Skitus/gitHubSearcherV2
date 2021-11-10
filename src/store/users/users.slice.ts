@@ -21,7 +21,6 @@ export const users = createSlice({
     isLoading: true,
     currentPage: 1,
     total_count: 0,
-    per_page: 5,
   },
   reducers: {
     setCurrentPageUsers(state, action) {
@@ -36,7 +35,6 @@ export const users = createSlice({
       state.data = action.payload.data.items;
       state.isLoading = false;
       state.total_count = action.payload.data.total_count;
-      state.per_page = action.payload.per_page;
     },
     [fetchUsers.rejected]: (state, action) => {
       state.isLoading = false;

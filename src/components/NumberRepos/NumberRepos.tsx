@@ -13,7 +13,7 @@ const NumberRepos = ({ usersRepo }: UsersReposProps): any => (
       <Typography.Paragraph className="repo-number" strong>
         Repo:
         &nbsp;
-        {repo.length}
+        {repo.total_count}
       </Typography.Paragraph>
     </div>
   )))
