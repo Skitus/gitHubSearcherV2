@@ -37,13 +37,13 @@ const Detail = () => {
     dispatch(fetchUser(userName));
   }, [userName]);
 
-  const changeRepoName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlerRepoName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRepoName(event.target.value);
     dispatch(clearData());
   };
 
   const debouncedChangeHandler = useCallback(
-    debounce(changeRepoName, 500),
+    debounce(handlerRepoName, 500),
     [repoName],
   );
 
