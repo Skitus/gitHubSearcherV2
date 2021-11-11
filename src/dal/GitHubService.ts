@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const USERS_PER_PAGE = 10;
+export const USERS_PER_PAGE = 5;
 export const REPOSITORIES_PER_PAGE = 30;
 
 class GitHubService {
@@ -8,13 +8,13 @@ class GitHubService {
 
     readonly BASE_URL = 'https://api.github.com/';
 
-    async getAllUsers(userName: string, currentPageUsers: number) {
+    async getAllUsers(userName: string, usersCurrentPage: number) {
       return await axios.get(`${this.BASE_URL}search/users`, {
         headers: this.headers,
         params: {
           per_page: USERS_PER_PAGE,
           q: userName || 'arthur',
-          page: currentPageUsers || 1,
+          page: usersCurrentPage || 1,
         },
       });
     }
@@ -34,12 +34,12 @@ class GitHubService {
         .then((response) => (response.data))));
     }
 
-    async getUserRepos(userName: string, repoName: string, currentPageUserRepo: number) {
+    async getUserRepos(userName: string, repoName: string, userRepoCurrentPage: number) {
       return await axios.get(`${this.BASE_URL}search/repositories?q=${repoName || ''} user:${userName} fork:true `, {
         headers: this.headers,
         params: {
           per_page: REPOSITORIES_PER_PAGE,
-          page: currentPageUserRepo || 1,
+          page: userRepoCurrentPage || 1,
         },
       });
     }

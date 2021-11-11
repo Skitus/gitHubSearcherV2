@@ -34,7 +34,7 @@ const UserProfileRepos = ({ userRepo, isLoading }: UsersRepoProps): any => (
         </Row>
       </Typography.Link>
     ))}
-    <Spin spinning={isLoading} size="large" />
+    <Spin className="loader" spinning={isLoading} size="large" />
   </>
 );
 

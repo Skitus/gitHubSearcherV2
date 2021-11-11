@@ -4,7 +4,7 @@ const selectUsersRepos = (state: any) => state.usersRepos;
 
 export const selectUsersRepositories = createSelector(
   selectUsersRepos,
-  (state) => state.usersRepo,
+  (state) => state.usersRepoData,
 );
 export const selectUsersRepoIsLoading = createSelector(
   selectUsersRepos,

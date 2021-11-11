@@ -9,8 +9,8 @@ export const fetchUser:any = createAsyncThunk(
 export const user = createSlice({
   name: 'getUsers',
   initialState: {
-    data: [],
-    isLoading: true,
+    userData: [],
+    isLoading: false,
   },
   reducers: {},
 
@@ -19,7 +19,7 @@ export const user = createSlice({
       state.isLoading = true;
     },
     [fetchUser.fulfilled]: (state, action) => {
-      state.data = action.payload.data;
+      state.userData = action.payload.data;
       state.isLoading = false;
     },
     [fetchUser.rejected]: (state, action) => {

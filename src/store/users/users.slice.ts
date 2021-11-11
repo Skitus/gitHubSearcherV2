@@ -3,41 +3,41 @@ import gitHubService from '../../dal/GitHubService';
 
 interface FetchUsersProps {
   userName: string,
-  currentPageUsers: number
+  usersCurrentPage: number
 }
 
 export const fetchUsers:any = createAsyncThunk(
   'users/fetchGetUsers',
-  async ({ userName, currentPageUsers }: FetchUsersProps) => {
-    const res: any = await gitHubService.getAllUsers(userName, currentPageUsers);
-    return res;
-  },
+  async ({
+    userName,
+    usersCurrentPage,
+  }: FetchUsersProps) => await gitHubService.getAllUsers(userName, usersCurrentPage),
 );
 
 export const users = createSlice({
   name: 'getUsers',
   initialState: {
-    data: [],
-    isLoading: true,
-    currentPage: 1,
-    total_count: 0,
+    usersData: [],
+    usersIsLoading: false,
+    usersCurrentPage: 1,
+    usersTotalCount: 0,
   },
   reducers: {
     setCurrentPageUsers(state, action) {
-      state.currentPage = action.payload;
+      state.usersCurrentPage = action.payload;
     },
   },
   extraReducers: {
     [fetchUsers.pending]: (state, action) => {
-      state.isLoading = true;
+      state.usersIsLoading = true;
     },
     [fetchUsers.fulfilled]: (state, action) => {
-      state.data = action.payload.data.items;
-      state.isLoading = false;
-      state.total_count = action.payload.data.total_count;
+      state.usersData = action.payload.data.items;
+      state.usersIsLoading = false;
+      state.usersTotalCount = action.payload.data.total_count;
     },
     [fetchUsers.rejected]: (state, action) => {
-      state.isLoading = false;
+      state.usersIsLoading = false;
     },
   },
 });

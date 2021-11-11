@@ -4,7 +4,7 @@ export const selectUser = (state: any) => state.user;
 
 export const selectUserData = createSelector(
   selectUser,
-  (user) => user.data,
+  (user) => user.userData,
 );
 
 export const selectUserIsLoading = createSelector(

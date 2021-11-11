@@ -5,12 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { clearData, fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
 import { fetchUser } from '../../store/user/user.slice';
-import {
-  selectUserRepoCurrentPage,
-  selectUserRepoData,
-  selectUserRepoIsLoading,
-  selectUserRepoTotalCount,
-} from '../../store/userRepo/userRepo.selector';
+import { userRepoSelector } from '../../store/userRepo/userRepo.selector';
 import { selectUserData, selectUserIsLoading } from '../../store/user/user.selector';
 import UserProfile from '../UserProfile/UserProfile';
 import UserProfileRepos from '../UserProfileRepos/UserProfileRepos';
@@ -21,17 +16,21 @@ const Detail = () => {
   const dispatch = useDispatch();
   const { userName } = useParams<{userName: string}>();
   const [repoName, setRepoName] = useState('');
-  const userRepo = useSelector(selectUserRepoData);
-  const repoIsLoading = useSelector(selectUserRepoIsLoading);
-  const currentPageUserRepo = useSelector(selectUserRepoCurrentPage);
-  const totalUserRepo = useSelector(selectUserRepoTotalCount);
+  const {
+    userRepoData,
+    userRepoIsLoading,
+    userRepoCurrentPage,
+    userRepoTotalCount,
+  } = useSelector(userRepoSelector);
+
   const user = useSelector(selectUserData);
   const userIsLoading = useSelector(selectUserIsLoading);
-  const pagesCount = Math.ceil(totalUserRepo / REPOSITORIES_PER_PAGE);
+
+  const pagesCount = Math.ceil(userRepoTotalCount / REPOSITORIES_PER_PAGE);
 
   React.useEffect(() => {
-    dispatch(fetchUserRepo({ userName, repoName, currentPageUserRepo }));
-  }, [userName, repoName, currentPageUserRepo]);
+    dispatch(fetchUserRepo({ userName, repoName, userRepoCurrentPage }));
+  }, [userName, repoName, userRepoCurrentPage]);
 
   React.useEffect(() => {
     dispatch(fetchUser(userName));
@@ -48,12 +47,12 @@ const Detail = () => {
   );
 
   const handleScroll = (event: SyntheticEvent) => {
-    if (!repoIsLoading) {
+    if (!userRepoIsLoading) {
       const { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
       const isLoadMore = clientHeight + scrollHeight * 0.2 > Math.floor(scrollHeight - scrollTop);
-      const isLastPage = currentPageUserRepo < pagesCount;
+      const isLastPage = userRepoCurrentPage < pagesCount;
       if (isLoadMore && isLastPage) {
-        dispatch(setCurrentPageUserRepo(currentPageUserRepo + 1));
+        dispatch(setCurrentPageUserRepo(userRepoCurrentPage + 1));
       }
     }
   };
@@ -71,8 +70,8 @@ const Detail = () => {
         onScroll={handleScroll}
       >
         <UserProfileRepos
-          userRepo={userRepo}
-          isLoading={repoIsLoading}
+          userRepo={userRepoData}
+          isLoading={userRepoIsLoading}
         />
       </div>
     </>

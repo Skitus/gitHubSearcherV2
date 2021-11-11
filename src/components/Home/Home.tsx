@@ -5,10 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DetailRoute } from '../../routes/Routes';
 import Title from '../Title/Title';
 import {
-  selectUsersCurrentPage,
-  selectUsersData,
-  selectUsersIsLoading,
-  selectUsersTotalCount,
+  usersSelector,
 } from '../../store/users/users.selector';
 import {
   selectUsersRepoIsLoading,
@@ -26,24 +23,24 @@ import './Home.scss';
 const Home = () => {
   const dispatch = useDispatch();
   const [userName, setUserName] = useState('');
-  const users = useSelector(selectUsersData);
-  const usersIsLoading = useSelector(selectUsersIsLoading);
-  const currentPageUsers = useSelector(selectUsersCurrentPage);
-  let totalUsers = useSelector(selectUsersTotalCount);
+  // eslint-disable-next-line prefer-const
+  let { usersCurrentPage, usersData, usersIsLoading, usersTotalCount } = useSelector(usersSelector);
+
   const repos = useSelector(selectUsersRepositories);
   const reposIsLoading = useSelector(selectUsersRepoIsLoading);
-  totalUsers = Math.ceil(totalUsers) > 1000 ? 1000 : totalUsers;
-  const pagesCountUsers = Math.ceil(totalUsers / USERS_PER_PAGE);
+
+  usersTotalCount = Math.ceil(usersTotalCount) > 1000 ? 1000 : usersTotalCount;
+  const pagesCountUsers = Math.ceil(usersTotalCount / USERS_PER_PAGE);
 
   React.useEffect(() => {
-    dispatch(fetchUsers({ userName, currentPageUsers }));
-  }, [userName, currentPageUsers]);
+    dispatch(fetchUsers({ userName, usersCurrentPage }));
+  }, [userName, usersCurrentPage]);
 
   React.useEffect(() => {
     if (!usersIsLoading) {
-      dispatch(fetchUsersRepo(users));
+      dispatch(fetchUsersRepo(usersData));
     }
-  }, [users, usersIsLoading]);
+  }, [usersData, usersIsLoading]);
 
   const changeUserName = (event: ChangeEvent<HTMLInputElement>) => {
     setUserName(event.target.value);
@@ -68,7 +65,7 @@ const Home = () => {
             : (
               <Row justify="space-between" align="top">
                 <Col>
-                  <AllUsers users={users} />
+                  <AllUsers users={usersData} />
                 </Col>
                 <Col>
                   <NumberRepos
@@ -79,7 +76,7 @@ const Home = () => {
             )
         }
         <PaginationUsers
-          currentPage={currentPageUsers}
+          currentPage={usersCurrentPage}
           pagesCount={pagesCountUsers}
         />
       </Col>
