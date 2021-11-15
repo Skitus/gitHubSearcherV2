@@ -1,15 +1,13 @@
 import React from 'react';
-import './App.css';
 import { HomeRoute } from './routes/Routes';
-
+import './App.scss';
 
 function App() {
-    return (
-        <div>
-            <HomeRoute />
-        </div>
-    );
+  return (
+    <div className="container">
+      <HomeRoute />
+    </div>
+  );
 }
-
 
 export default App;

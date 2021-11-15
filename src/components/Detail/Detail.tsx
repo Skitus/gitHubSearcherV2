@@ -1,87 +1,81 @@
-import React, {useCallback} from 'react';
+import React, { SyntheticEvent, useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import {Col, Form, Input, Row, Typography} from 'antd';
-import {useDetailData} from '../../hooks/hooks';
-import {fetchGetUser} from '../../redux/asyncThunk/userReducer';
-import {fetchGetUserRepo} from '../../redux/asyncThunk/userRepoReducer';
-import './Detail.css';
+import { Form, Input } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { clearData, fetchUserRepo, setCurrentPageUserRepo } from '../../store/userRepo/userRepo.slice';
+import { fetchUser } from '../../store/user/user.slice';
+import { userRepoSelector } from '../../store/userRepo/userRepo.selector';
+import { selectUserData, selectUserIsLoading } from '../../store/user/user.selector';
+import UserProfile from '../UserProfile/UserProfile';
+import UserProfileRepos from '../UserProfileRepos/UserProfileRepos';
+import { REPOSITORIES_PER_PAGE } from '../../dal/GitHubService';
+import './Detail.scss';
 
-function Detail() {
-    const {userName, setRepos, dispatch, repos, userRepo, status, user} = useDetailData();
+const Detail = () => {
+  const dispatch = useDispatch();
+  const { userName } = useParams<{userName: string}>();
+  const [repoName, setRepoName] = useState('');
+  const {
+    userRepoData,
+    userRepoIsLoading,
+    userRepoCurrentPage,
+    userRepoTotalCount,
+  } = useSelector(userRepoSelector);
 
-    React.useEffect(() => {
-        dispatch(fetchGetUser(userName));
-        /*        dispatch(fetchGetUserRepo({userName, repos}));*/
-    }, [userName]);
+  const user = useSelector(selectUserData);
+  const userIsLoading = useSelector(selectUserIsLoading);
 
-    React.useEffect(() => {
-        dispatch(fetchGetUserRepo(user));
-    }, [user]);
+  const pagesCount = Math.ceil(userRepoTotalCount / REPOSITORIES_PER_PAGE);
 
-    /*    console.log("repos user", userRepo);
-        console.log("userName", userName);
-        console.log("repos", repos);*/
+  React.useEffect(() => {
+    dispatch(fetchUserRepo({ userName, repoName, userRepoCurrentPage }));
+  }, [userName, repoName, userRepoCurrentPage]);
 
+  React.useEffect(() => {
+    dispatch(fetchUser(userName));
+  }, [userName]);
 
-    const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRepos(event.target.value);
-    };
+  const handlerRepoName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRepoName(event.target.value);
+    dispatch(clearData());
+  };
 
-    const filteredRepos = userRepo.filter((rep: any) => {
-        return rep.name.toLowerCase().includes(repos.toLowerCase());
-    });
+  const debouncedChangeHandler = useCallback(
+    debounce(handlerRepoName, 500),
+    [repoName],
+  );
 
-    const debouncedChangeHandler = useCallback(
-        debounce(changeHandler, 300)
-        , [repos]);
+  const handleScroll = (event: SyntheticEvent) => {
+    if (!userRepoIsLoading) {
+      const { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
+      const isLoadMore = clientHeight + scrollHeight * 0.2 > Math.floor(scrollHeight - scrollTop);
+      const isLastPage = userRepoCurrentPage < pagesCount;
+      if (isLoadMore && isLastPage) {
+        dispatch(setCurrentPageUserRepo(userRepoCurrentPage + 1));
+      }
+    }
+  };
 
-    return (
-        <div className="right-sidebar">
-            <Row justify='center' align='top'>
-                <Col>
-                    <img src={user.avatar_url} className='avatar-user'/>
-                </Col>
-                <Col>
-                    <Typography className="bio-text">
-                        <Typography.Paragraph>{user.login}</Typography.Paragraph>
-                        <Typography.Paragraph>{user.email}</Typography.Paragraph>
-                        <Typography.Paragraph>{user.location}</Typography.Paragraph>
-                        <Typography.Paragraph>{user.created_at}</Typography.Paragraph>
-                        <Typography.Paragraph>{user.bio}</Typography.Paragraph>
-                        <Typography.Paragraph>Followers: {user.followers}</Typography.Paragraph>
-                        <Typography.Paragraph>Following: {user.following}</Typography.Paragraph>
-                    </Typography>
-                </Col>
-            </Row>
-            <Form>
-                <Form className="search">
-                    <Form.Item
-                        name='search'
-                    >
-                        <Input placeholder='Search for Repos' onChange={debouncedChangeHandler}/>
-                    </Form.Item>
-                </Form>
-            </Form>
-            <div>
-                {
-                    status ?
-                        <p>Loading... </p> :
-                        filteredRepos?.map((repo: { name: string, forks_count: number, stargazers_count: number, html_url: string }) =>
-                            <a href={repo.html_url} target="_blank">
-                                <Row justify='space-between' align='middle' className='repos-user'>
-                                    <Col>
-                                        <Typography.Text>{repo.name}</Typography.Text>
-                                    </Col>
-                                    <Col>
-                                        <Typography.Text>Forks {repo.forks_count}</Typography.Text>
-                                        <br/>
-                                        <Typography.Text>Stars {repo.stargazers_count}</Typography.Text>
-                                    </Col>
-                                </Row>
-                            </a>)
-                }
-            </div>
-        </div>);
-}
+  return (
+    <>
+      <UserProfile user={user} isLoading={userIsLoading} />
+      <Form>
+        <Form.Item>
+          <Input placeholder="Search for Repos" onChange={debouncedChangeHandler} />
+        </Form.Item>
+      </Form>
+      <div
+        className="user-repo-scroll"
+        onScroll={handleScroll}
+      >
+        <UserProfileRepos
+          userRepo={userRepoData}
+          isLoading={userRepoIsLoading}
+        />
+      </div>
+    </>
+  );
+};
 
 export default Detail;

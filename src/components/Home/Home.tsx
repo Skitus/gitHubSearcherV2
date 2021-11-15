@@ -1,85 +1,90 @@
-import {Link, useRouteMatch} from 'react-router-dom';
-import React, {useCallback} from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
-import {Col, Form, Input, Row, Typography} from 'antd';
-import {DetailRoute} from '../../routes/Routes';
-import {useHomeData} from '../../hooks/hooks';
-import {fetchGetUsers} from '../../redux/asyncThunk/usersReducer';
-import {fetchGetUsersRepo} from '../../redux/asyncThunk/usersRepoReducer';
-import './Home.css';
+import { Col, Form, Input, Row } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { DetailRoute } from '../../routes/Routes';
+import Title from '../Title/Title';
+import {
+  usersSelector,
+} from '../../store/users/users.selector';
+import {
+  selectUsersRepoIsLoading,
+  selectUsersRepositories,
+} from '../../store/usersRepos/usersRepo.selector';
+import { fetchUsers } from '../../store/users/users.slice';
+import { fetchUsersRepo } from '../../store/usersRepos/usersRepo.slice';
+import AllUsers from '../Users/Users';
+import NumberRepos from '../NumberRepos/NumberRepos';
+import PaginationUsers from '../Pagination/PaginationUsers';
+import Loader from '../Loader/Loader';
+import { USERS_PER_PAGE } from '../../dal/GitHubService';
+import './Home.scss';
 
 const Home = () => {
-    let match = useRouteMatch();
-    const {value, setValue, status, users, usersRepo, dispatch} = useHomeData();
+  const dispatch = useDispatch();
+  const [userName, setUserName] = useState('');
+  // eslint-disable-next-line prefer-const
+  let { usersCurrentPage, usersData, usersIsLoading, usersTotalCount } = useSelector(usersSelector);
 
-    React.useEffect(() => {
-        dispatch(fetchGetUsers(value));
-    }, [value]);
+  const repos = useSelector(selectUsersRepositories);
+  const reposIsLoading = useSelector(selectUsersRepoIsLoading);
 
-    React.useEffect(() => {
-        if(users){
-            dispatch(fetchGetUsersRepo(users));
+  usersTotalCount = Math.ceil(usersTotalCount) > 1000 ? 1000 : usersTotalCount;
+  const pagesCountUsers = Math.ceil(usersTotalCount / USERS_PER_PAGE);
+
+  React.useEffect(() => {
+    dispatch(fetchUsers({ userName, usersCurrentPage }));
+  }, [userName, usersCurrentPage]);
+
+  React.useEffect(() => {
+    if (!usersIsLoading) {
+      dispatch(fetchUsersRepo(usersData));
+    }
+  }, [usersData, usersIsLoading]);
+
+  const changeUserName = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserName(event.target.value);
+  };
+
+  const debounceChangeUserName = useCallback(
+    debounce(changeUserName, 500), [userName],
+  );
+
+  return (
+    <Row justify="space-around" align="top">
+      <Col className="left-side" xs={23} sm={23} md={23} lg={11} xl={11} xxl={11}>
+        <Title />
+        <Form>
+          <Form.Item>
+            <Input placeholder="Search for Users" onChange={debounceChangeUserName} />
+          </Form.Item>
+        </Form>
+        {
+          reposIsLoading
+            ? <Loader isLoading={reposIsLoading} perPage={USERS_PER_PAGE} />
+            : (
+              <Row justify="space-between" align="top">
+                <Col>
+                  <AllUsers users={usersData} />
+                </Col>
+                <Col>
+                  <NumberRepos
+                    usersRepo={repos}
+                  />
+                </Col>
+              </Row>
+            )
         }
-    },[users]);
-
-    const changeHandler = (event: any) => {
-        setValue(event.target.value);
-    };
-
-    const debouncedChangeHandler = useCallback(
-        debounce(changeHandler, 300), [value]);
-
-    return (
-        <div className="flex-box">
-            <div className="left-sidebar">
-                <Typography>
-                    <Typography.Title>
-                        Git hub searcher
-                    </Typography.Title>
-                </Typography>
-                <Form className="search">
-                    <Form.Item name='search'>
-                        <Input placeholder='Search for Users' onChange={debouncedChangeHandler}/>
-                    </Form.Item>
-                </Form>
-                <Row justify='space-between' className="block" align='top'>
-                    <Col>
-                        {
-                            status ?
-                                <p>loading</p> :
-                                (users.items.map((obj: { login: string, avatar_url: string, id: number }) => (
-                                            <Link to={`${match.url}${obj.login}`}>
-                                                <div key={obj.id} className="img-username">
-                                                    <img src={obj.avatar_url} className="img"/>
-                                                    <Typography.Text className="user-name">{obj.login}</Typography.Text>
-                                                </div>
-                                            </Link>
-                                        )
-                                    )
-                                )
-
-                        }
-                    </Col>
-                    <Col>
-                        {
-                            status ?
-                                <p>loading</p> :
-                                usersRepo.map((arr: { id: number, length: Function }) => (
-                                    <div key={arr.id} className="blockRepos">
-                                        <p className="repo-number">Repo: {arr.length}</p>
-                                    </div>)
-                                )
-                        }
-                    </Col>
-                </Row>
-
-            </div>
-            {
-                !status && <DetailRoute/>
-            }
-        </div>
-
-    );
+        <PaginationUsers
+          currentPage={usersCurrentPage}
+          pagesCount={pagesCountUsers}
+        />
+      </Col>
+      <Col className="right-side" xs={23} sm={23} md={23} lg={11} xl={11} xxl={11}>
+        <DetailRoute />
+      </Col>
+    </Row>
+  );
 };
 
 export default Home;
