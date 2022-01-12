@@ -3,7 +3,6 @@ import axios from 'axios';
 export const USERS_PER_PAGE = 5;
 export const REPOSITORIES_PER_PAGE = 30;
 
-
 class GitHubService {
     private headers = { Authorization: `token ${process.env.REACT_APP_ACCESS_TOKEN}` };
 
