@@ -27,8 +27,8 @@ class GitHubService {
 
     getAllUsersRepos(data: []) {
       return Promise.all(data.map((user: any) => axios.get(`${this.BASE_URL}search/repositories?q= user:${user.login} fork:true `, {
-          headers: this.headers,
-          params: {
+        headers: this.headers,
+        params: {
           per_page: 1,
         },
       })
